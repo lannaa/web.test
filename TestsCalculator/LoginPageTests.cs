@@ -3,6 +3,7 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
 using System;
+using TestsCalculator.Pages;
 
 namespace TestsCalculator
 {
@@ -29,14 +30,10 @@ namespace TestsCalculator
         public void PositiveTest()
         {
             // Arrange
-            IWebElement loginFld = driver.FindElement(By.Id("login"));
-            IWebElement passFld = driver.FindElement(By.Id("password"));
-            IWebElement loginBtn = driver.FindElement(By.Id("loginBtn"));
+            LoginPage loginPage = new LoginPage(driver);
 
-            // Act 
-            loginFld.SendKeys("test");
-            passFld.SendKeys("newyork1");
-            loginBtn.Click();
+            // Act
+            loginPage.Login("test", "newyork1");
 
             // Assert
             string actualUrl = driver.Url;
@@ -48,15 +45,13 @@ namespace TestsCalculator
         public void NegativeTestWrongName()
         {
             // Arrange
-            IWebElement loginFld = driver.FindElement(By.Id("login"));
-            IWebElement passFld = driver.FindElement(By.Id("password"));
-            IWebElement loginBtn = driver.FindElement(By.Id("loginBtn"));
+            LoginPage loginPage = new LoginPage(driver);
 
             // Act
-            loginFld.SendKeys("negativeTest");
-            passFld.SendKeys("newyork1");
-            loginBtn.Click();
-
+            loginPage.LoginField.SendKeys("negativeTest");
+            loginPage.PasswordField.SendKeys("newyork1");
+            loginPage.LoginButton.Click();
+          
             // Assert
             IWebElement errorMessage = driver.FindElement(By.Id("errorMessage"));
             Assert.IsTrue(errorMessage.Displayed);

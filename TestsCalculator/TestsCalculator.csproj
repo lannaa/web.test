@@ -20,5 +20,9 @@
   <ItemGroup>
     <None Remove="DotNetSeleniumExtras.WaitHelpers" />
     <None Remove="Selenium.Support" />
+    <None Remove="Pages\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Pages\" />
   </ItemGroup>
 </Project>
