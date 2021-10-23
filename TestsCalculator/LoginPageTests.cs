@@ -51,63 +51,58 @@ namespace TestsCalculator
             loginPage.LoginField.SendKeys("negativeTest");
             loginPage.PasswordField.SendKeys("newyork1");
             loginPage.LoginButton.Click();
-          
+
             // Assert
-            IWebElement errorMessage = driver.FindElement(By.Id("errorMessage"));
-            Assert.IsTrue(errorMessage.Displayed);
-            Assert.AreEqual("Incorrect user name!", errorMessage.Text);
+            Assert.IsTrue(loginPage.InfoMessages.Displayed);
+            Assert.AreEqual("Incorrect user name!", loginPage.InfoMessages.Text);
         }
 
         [Test]
         public void NegativeTestWrongPass()
         {
-            // Arrange 
-            IWebElement loginFld = driver.FindElement(By.Id("login"));
-            IWebElement passFld = driver.FindElement(By.Id("password"));
-            IWebElement loginBtn = driver.FindElement(By.Id("loginBtn"));
+            // Arrange
+            LoginPage loginPage = new LoginPage(driver);
 
             // Act
-            loginFld.SendKeys("test");
-            passFld.SendKeys("test");
-            loginBtn.Click();
+            loginPage.LoginField.SendKeys("test");
+            loginPage.PasswordField.SendKeys("test");
+            loginPage.LoginButton.Click();
 
             // Assert
-            IWebElement errorMessage = driver.FindElement(By.Id("errorMessage"));
-            Assert.IsTrue(errorMessage.Displayed);
-            Assert.AreEqual("Incorrect password!", errorMessage.Text);
+            Assert.IsTrue(loginPage.InfoMessages.Displayed);
+            Assert.AreEqual("Incorrect password!", loginPage.InfoMessages.Text);
         }
 
         [Test]
         public void NegativeTestWrongCredentials()
         {
-        // Arrange
-        IWebElement loginFld = driver.FindElement(By.Id("login"));
-        IWebElement passFld = driver.FindElement(By.Id("password"));
-        IWebElement loginBtn = driver.FindElement(By.Id("loginBtn"));
+            // Arrange
+            LoginPage loginPage = new LoginPage(driver);
+   
 
-        // Act
-        loginFld.SendKeys("testLogin");
-        passFld.SendKeys("testPass");
-        loginBtn.Click();
+            // Act
+            loginPage.LoginField.SendKeys("testLogin");
+            loginPage.PasswordField.SendKeys("testPass");
+            loginPage.LoginButton.Click();
 
-        // Assert
-        IWebElement errorMessage = driver.FindElement(By.Id("errorMessage"));
-        Assert.IsTrue(errorMessage.Displayed);
-        Assert.AreEqual("\'testLogin\' user doesn\'t exist!", errorMessage.Text);
+            // Assert
+            Assert.IsTrue(loginPage.InfoMessages.Displayed);
+            Assert.AreEqual("\'testLogin\' user doesn\'t exist!", loginPage.InfoMessages.Text);
         }
 
         [Test]
         public void PositiveTestRemindPassPresent()
         {
             // Arrange
-            IWebElement remindBtn = driver.FindElement(By.Id("remindBtn"));
+            LoginPage loginPage = new LoginPage(driver);
 
             // Act 
             new WebDriverWait(driver, TimeSpan.FromSeconds(10))
                 .Until(SeleniumExtras.WaitHelpers.ExpectedConditions.VisibilityOfAllElementsLocatedBy(By.Id("remindBtn")));
+            // why loginPage.RemindPassBtn is not accepted 
 
             // Assert
-            Assert.IsTrue(remindBtn.Displayed);
+            Assert.IsTrue(loginPage.RemindPassBtn.Displayed);
         }
     }
 }
