@@ -154,6 +154,7 @@ namespace TestsCalculator
 
             //Act 
             SelectElement s = new SelectElement(calculatorPage.MonthDropdown);
+
             IList<string> actualMonths = new List<string>();
             for (int j = 0; j < s.Options.Count; j++)
             {
