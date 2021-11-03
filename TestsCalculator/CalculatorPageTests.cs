@@ -67,8 +67,8 @@ namespace TestsCalculator
             calculatorPage.TermField.SendKeys(term);
 
             //Assert
-            Assert.AreEqual(income, calculatorPage.IncomeField.GetAttribute("value"));
-            Assert.AreEqual(interest, calculatorPage.InterestField.GetAttribute("value"));
+            Assert.AreEqual(income, calculatorPage.IncomeField);
+            Assert.AreEqual(interest, calculatorPage.InterestField);
         }
 
         [Test]
@@ -94,8 +94,8 @@ namespace TestsCalculator
             calculatorPage.DaysRadioBtn360.Click();
 
             //Assert
-            Assert.AreEqual("1005.56", calculatorPage.IncomeField.GetAttribute("value"));
-            Assert.AreEqual("5.56", calculatorPage.InterestField.GetAttribute("value"));
+            Assert.AreEqual("1005.56", calculatorPage.IncomeField);
+            Assert.AreEqual("5.56", calculatorPage.InterestField);
         }
 
         //select future date
@@ -113,12 +113,12 @@ namespace TestsCalculator
 
             //Act
             calculatorPage.TermField.SendKeys(term);
-            new SelectElement(calculatorPage.DayDropdown).SelectByText(day);
-            new SelectElement(calculatorPage.MonthDropdown).SelectByText(month);
-            new SelectElement(calculatorPage.YearDropdown).SelectByText(year);
+            calculatorPage.Day.SelectByText(day);
+            calculatorPage.Month.SelectByText(month);
+            calculatorPage.Year.SelectByText(year);
 
             //Assert
-            Assert.AreEqual(endDate, calculatorPage.EndDateField.GetAttribute("value"), "Date is incorrect");
+            Assert.AreEqual(endDate, calculatorPage.EndDateField, "Date is incorrect");
         }
 
         [Test]
@@ -133,8 +133,8 @@ namespace TestsCalculator
             }
 
             //Act
-            new SelectElement(calculatorPage.MonthDropdown).SelectByText("October");
-            SelectElement s = new SelectElement(calculatorPage.DayDropdown);
+            calculatorPage.Month.SelectByText("October");
+            SelectElement s = calculatorPage.Day;
             IList<string> actualDays = new List<string>();
             for (int j = 0; j < s.Options.Count; j++)
             {
@@ -150,10 +150,10 @@ namespace TestsCalculator
         {
             //Arrange
             CalculatorPage calculatorPage = new CalculatorPage(driver);
-            List<string> expectedMonths = new List<string> { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
+            List<string> expectedMonths = new List<string> {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
 
             //Act 
-            SelectElement s = new SelectElement(calculatorPage.MonthDropdown);
+            SelectElement s = calculatorPage.Month;
 
             IList<string> actualMonths = new List<string>();
             for (int j = 0; j < s.Options.Count; j++)
@@ -177,7 +177,7 @@ namespace TestsCalculator
             }
 
             //Act 
-            SelectElement s = new SelectElement(calculatorPage.YearDropdown);
+            SelectElement s = calculatorPage.Year;
             IList<string> actualYears = new List<string>();
             for (int j = 0; j < s.Options.Count; j++)
             {

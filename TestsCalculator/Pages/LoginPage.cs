@@ -1,5 +1,7 @@
 ﻿using System;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
+using SeleniumExtras.WaitHelpers;
 
 namespace TestsCalculator.Pages
 {
@@ -29,7 +31,16 @@ namespace TestsCalculator.Pages
 
         public IWebElement PasswordField => _driver.FindElement(By.Id("password"));
         public IWebElement LoginButton => _driver.FindElement(By.Id("loginBtn"));
-        public IWebElement RemindPassBtn => _driver.FindElement(By.Id("remindBtn"));
+        public IWebElement RemindPassBtn
+        {
+            get
+            {
+                By id = By.Id("remindBtn");
+                new WebDriverWait(_driver, TimeSpan.FromSeconds(10))
+                    .Until(ExpectedConditions.VisibilityOfAllElementsLocatedBy(id));
+                return _driver.FindElement(id);
+            }
+        }
 
         public void Login(string name, string password)
         {
