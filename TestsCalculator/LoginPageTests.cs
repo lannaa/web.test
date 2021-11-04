@@ -96,11 +96,6 @@ namespace TestsCalculator
             // Arrange
             LoginPage loginPage = new LoginPage(driver);
 
-            // Act 
-            new WebDriverWait(driver, TimeSpan.FromSeconds(10))
-                .Until(SeleniumExtras.WaitHelpers.ExpectedConditions.VisibilityOfAllElementsLocatedBy(By.Id("remindBtn")));
-            // why loginPage.RemindPassBtn is not accepted 
-
             // Assert
             Assert.IsTrue(loginPage.RemindPassBtn.Displayed);
         }
