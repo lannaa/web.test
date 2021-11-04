@@ -113,11 +113,7 @@ namespace TestsCalculator
 
             //Act
             calculatorPage.TermField.SendKeys(term);
-            /* calculatorPage.Day.SelectByText(day);
-             calculatorPage.Month.SelectByText(month);
-             calculatorPage.Year.SelectByText(year);
-            */
-            calculatorPage.StartDate = date; // $"{day}/{month}/{year}";
+            calculatorPage.StartDate = date; 
 
             //Assert
             Assert.AreEqual(endDate, calculatorPage.EndDate, "Date is incorrect");
