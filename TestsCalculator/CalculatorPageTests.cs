@@ -67,8 +67,8 @@ namespace TestsCalculator
             calculatorPage.TermField.SendKeys(term);
 
             //Assert
-            Assert.AreEqual(income, calculatorPage.IncomeField);
-            Assert.AreEqual(interest, calculatorPage.InterestField);
+            Assert.AreEqual(income, calculatorPage.Income);
+            Assert.AreEqual(interest, calculatorPage.Interest);
         }
 
         [Test]
@@ -94,31 +94,33 @@ namespace TestsCalculator
             calculatorPage.DaysRadioBtn360.Click();
 
             //Assert
-            Assert.AreEqual("1005.56", calculatorPage.IncomeField);
-            Assert.AreEqual("5.56", calculatorPage.InterestField);
+            Assert.AreEqual("1005.56", calculatorPage.Income);
+            Assert.AreEqual("5.56", calculatorPage.Interest);
         }
 
         //select future date
-        [TestCase("20", "7", "June", "2022", "27/06/2022")]
+        [TestCase("20", "7 June 2022", "27/06/2022")]
         //select past date
-        [TestCase("20", "21", "March", "2010", "10/04/2010")]
+        [TestCase("20", "21 March 2010", "10/04/2010")]
         //end date is 1st day of the Month
-        [TestCase("22", "10", "October", "2022", "01/11/2022")]
+        [TestCase("22", "10 October 2022", "01/11/2022")]
         //check Feb has 29 days in Leap Year
-        [TestCase("1", "28", "February", "2024", "29/02/2024")]
-        public void SelectTimePeriod(string term, string day, string month, string year, string endDate)
+        [TestCase("1", "28 February 2024", "29/02/2024")]
+        public void SelectTimePeriod(string term, string date, string endDate)
         {
             //Arrange
             CalculatorPage calculatorPage = new CalculatorPage(driver);
 
             //Act
             calculatorPage.TermField.SendKeys(term);
-            calculatorPage.Day.SelectByText(day);
-            calculatorPage.Month.SelectByText(month);
-            calculatorPage.Year.SelectByText(year);
+            /* calculatorPage.Day.SelectByText(day);
+             calculatorPage.Month.SelectByText(month);
+             calculatorPage.Year.SelectByText(year);
+            */
+            calculatorPage.StartDate = date; // $"{day}/{month}/{year}";
 
             //Assert
-            Assert.AreEqual(endDate, calculatorPage.EndDateField, "Date is incorrect");
+            Assert.AreEqual(endDate, calculatorPage.EndDate, "Date is incorrect");
         }
 
         [Test]
@@ -186,6 +188,16 @@ namespace TestsCalculator
 
             //Assert
             Assert.AreEqual(expectedYears, actualYears);
+        }
+
+        [Test]
+        public void CheckDefaultStartDate()
+        {
+            //Arrange
+            CalculatorPage calculatorPage = new CalculatorPage(driver);
+
+            //Assert
+            Assert.AreEqual(DateTime.Today.ToString("d/M/yyyy"), calculatorPage.StartDate);
         }
     }
 }

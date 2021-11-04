@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 
@@ -21,8 +22,27 @@ namespace TestsCalculator.Pages
         public SelectElement Year => new SelectElement(_driver.FindElement(By.Id("year")));
         public IWebElement DaysRadioBtn365 => _driver.FindElement(By.Id("d365"));
         public IWebElement DaysRadioBtn360 => _driver.FindElement(By.Id("d360"));
-        public string IncomeField => _driver.FindElement(By.Id("income")).GetAttribute("value");
-        public string InterestField => _driver.FindElement(By.Id("interest")).GetAttribute("value");
-        public string EndDateField => _driver.FindElement(By.Id("endDate")).GetAttribute("value");
+        public string Income => _driver.FindElement(By.Id("income")).GetAttribute("value");
+        public string Interest => _driver.FindElement(By.Id("interest")).GetAttribute("value");
+        public string EndDate => _driver.FindElement(By.Id("endDate")).GetAttribute("value");
+
+        public string StartDate
+        {
+            get
+            {
+                int day = int.Parse(Day.SelectedOption.Text);
+                int month = DateTime.ParseExact(Month.SelectedOption.Text, "MMMM", CultureInfo.InvariantCulture).Month;
+                int year = int.Parse(Year.SelectedOption.Text);
+                return $"{day}/{month}/{year}";
+
+            }
+            set
+            {
+                DateTime date = DateTime.Parse(value);
+                Day.SelectByText(date.Day.ToString());
+                Month.SelectByText(date.ToString("MMMM"));
+                Year.SelectByText(date.ToString("yyyy"));
+            }
+        }
     }
 }
