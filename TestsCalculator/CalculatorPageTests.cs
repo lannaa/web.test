@@ -5,6 +5,7 @@ using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
 using System.Collections.Generic;
 using System.Linq;
+using TestsCalculator.Pages;
 
 namespace TestsCalculator
 {
@@ -20,9 +21,8 @@ namespace TestsCalculator
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
             driver.Url = "http://127.0.0.1:8080/";
 
-            driver.FindElement(By.Id("login")).SendKeys("test");
-            driver.FindElement(By.Id("password")).SendKeys("newyork1");
-            driver.FindElement(By.Id("loginBtn")).Click();
+            LoginPage loginPage = new LoginPage(driver);
+            loginPage.Login("test", "newyork1");
         }
 
         [TearDown]
@@ -59,88 +59,71 @@ namespace TestsCalculator
         public void FillForm(string amount, string percent, string term, string income, string interest)
         {
             //Arrange
-            IWebElement amountField = driver.FindElement(By.Id("amount"));
-            IWebElement percentField = driver.FindElement(By.Id("percent"));
-            IWebElement termField = driver.FindElement(By.Id("term"));
+            CalculatorPage calculatorPage = new CalculatorPage(driver);
 
             //Act
-            amountField.SendKeys(amount);
-            percentField.SendKeys(percent);
-            termField.SendKeys(term);
+            calculatorPage.AmountField.SendKeys(amount);
+            calculatorPage.PercentField.SendKeys(percent);
+            calculatorPage.TermField.SendKeys(term);
 
             //Assert
-            IWebElement incomeField = driver.FindElement(By.Id("income"));
-            IWebElement interestField = driver.FindElement(By.Id("interest"));
-
-            Assert.AreEqual(income, incomeField.GetAttribute("value"));
-            Assert.AreEqual(interest, interestField.GetAttribute("value"));
+            Assert.AreEqual(income, calculatorPage.Income);
+            Assert.AreEqual(interest, calculatorPage.Interest);
         }
 
         [Test]
         public void CheckDefaultRadioBtnOption()
         {
             //Arrange
-            IWebElement daysRadioBtn365 = driver.FindElement(By.Id("d365"));
+            CalculatorPage calculatorPage = new CalculatorPage(driver);
 
             //Assert
-            Assert.True(daysRadioBtn365.Selected);
+            Assert.True(calculatorPage.DaysRadioBtn365.Selected);
         }
 
         [Test]
         public void SelectRadioBtn360()
         {
             //Arrange
-            IWebElement amountField = driver.FindElement(By.Id("amount"));
-            IWebElement percentField = driver.FindElement(By.Id("percent"));
-            IWebElement termField = driver.FindElement(By.Id("term"));
-            IWebElement daysRadioBtn360 = driver.FindElement(By.Id("d360"));
+            CalculatorPage calculatorPage = new CalculatorPage(driver);
 
             //Act
-            amountField.SendKeys("1000");
-            percentField.SendKeys("10");
-            termField.SendKeys("20");
-            daysRadioBtn360.Click();
+            calculatorPage.AmountField.SendKeys("1000");
+            calculatorPage.PercentField.SendKeys("10");
+            calculatorPage.TermField.SendKeys("20");
+            calculatorPage.DaysRadioBtn360.Click();
 
             //Assert
-            IWebElement incomeField = driver.FindElement(By.Id("income"));
-            IWebElement interestField = driver.FindElement(By.Id("interest"));
-            Assert.AreEqual("1005.56", incomeField.GetAttribute("value"));
-            Assert.AreEqual("5.56", interestField.GetAttribute("value"));
+            Assert.AreEqual("1005.56", calculatorPage.Income);
+            Assert.AreEqual("5.56", calculatorPage.Interest);
         }
 
         //select future date
-        [TestCase("20", "7", "June", "2022", "27/06/2022")]
+        [TestCase("20", "7 June 2022", "27/06/2022")]
         //select past date
-        [TestCase("20", "21", "March", "2010", "10/04/2010")]
+        [TestCase("20", "21 March 2010", "10/04/2010")]
         //end date is 1st day of the Month
-        [TestCase("22", "10", "October", "2022", "01/11/2022")]
+        [TestCase("22", "10 October 2022", "01/11/2022")]
         //check Feb has 29 days in Leap Year
-        [TestCase("1", "28", "February", "2024", "29/02/2024")]
-        public void SelectTimePeriod(string term, string day, string month, string year, string endDate)
+        [TestCase("1", "28 February 2024", "29/02/2024")]
+        public void SelectTimePeriod(string term, string date, string endDate)
         {
             //Arrange
-            IWebElement termField = driver.FindElement(By.Id("term"));
-            IWebElement dayDropdown = driver.FindElement(By.Id("day"));
-            IWebElement monthDropdown = driver.FindElement(By.Id("month"));
-            IWebElement yearDropdown = driver.FindElement(By.Id("year"));
+            CalculatorPage calculatorPage = new CalculatorPage(driver);
 
             //Act
-            termField.SendKeys(term);
-            new SelectElement(dayDropdown).SelectByText(day);
-            new SelectElement(monthDropdown).SelectByText(month);
-            new SelectElement(yearDropdown).SelectByText(year);
+            calculatorPage.TermField.SendKeys(term);
+            calculatorPage.StartDate = date; 
 
             //Assert
-            IWebElement endDateField = driver.FindElement(By.Id("endDate"));
-            Assert.AreEqual(endDate, endDateField.GetAttribute("value"), "Date is incorrect");
+            Assert.AreEqual(endDate, calculatorPage.EndDate, "Date is incorrect");
         }
 
         [Test]
         public void CheckDaysInDropdown()
         {
             //Arrange
-            IWebElement dayDropdown = driver.FindElement(By.Id("day"));
-            IWebElement monthDropdown = driver.FindElement(By.Id("month"));
+            CalculatorPage calculatorPage = new CalculatorPage(driver);
             IList<string> expectedDays = new List<string>();
             for (int j = 1; j < 32; j++)
             {
@@ -148,14 +131,14 @@ namespace TestsCalculator
             }
 
             //Act
-            new SelectElement(monthDropdown).SelectByText("October");
-            SelectElement s = new SelectElement(dayDropdown);
+            calculatorPage.Month.SelectByText("October");
+            SelectElement s = calculatorPage.Day;
             IList<string> actualDays = new List<string>();
             for (int j = 0; j < s.Options.Count; j++)
             {
                 actualDays.Add(s.Options.ElementAt(j).Text);
             }
-            
+
             //Assert
             Assert.AreEqual(expectedDays, actualDays);
         }
@@ -164,11 +147,12 @@ namespace TestsCalculator
         public void CheckMonthInDropdown()
         {
             //Arrange
-            IWebElement monthDropdown = driver.FindElement(By.Id("month"));
+            CalculatorPage calculatorPage = new CalculatorPage(driver);
             List<string> expectedMonths = new List<string> {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
 
             //Act 
-            SelectElement s = new SelectElement(monthDropdown);
+            SelectElement s = calculatorPage.Month;
+
             IList<string> actualMonths = new List<string>();
             for (int j = 0; j < s.Options.Count; j++)
             {
@@ -183,7 +167,7 @@ namespace TestsCalculator
         public void CheckYearInDropdown()
         {
             //Arrange
-            IWebElement yearDropdown = driver.FindElement(By.Id("year"));
+            CalculatorPage calculatorPage = new CalculatorPage(driver);
             IList<string> expectedYears = new List<string>();
             for (int j = 2010; j < 2026; j++)
             {
@@ -191,7 +175,7 @@ namespace TestsCalculator
             }
 
             //Act 
-            SelectElement s = new SelectElement(yearDropdown);
+            SelectElement s = calculatorPage.Year;
             IList<string> actualYears = new List<string>();
             for (int j = 0; j < s.Options.Count; j++)
             {
@@ -200,6 +184,16 @@ namespace TestsCalculator
 
             //Assert
             Assert.AreEqual(expectedYears, actualYears);
+        }
+
+        [Test]
+        public void CheckDefaultStartDate()
+        {
+            //Arrange
+            CalculatorPage calculatorPage = new CalculatorPage(driver);
+
+            //Assert
+            Assert.AreEqual(DateTime.Today.ToString("d/M/yyyy"), calculatorPage.StartDate);
         }
     }
 }
