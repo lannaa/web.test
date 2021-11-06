@@ -6,3 +6,5 @@ packages/*
 TestsCalculator/.vs/*
 TestsCalculator/bin/*
 TestsCalculator/obj/*
+.DS_Store
+.vscode
