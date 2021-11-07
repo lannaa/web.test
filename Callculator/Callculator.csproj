@@ -81,7 +81,7 @@
       <HintPath>..\packages\Microsoft.Rest.ClientRuntime.Azure.3.3.19\lib\net461\Microsoft.Rest.ClientRuntime.Azure.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Azure.Management.Compute">
-      <HintPath>..\packages\Microsoft.Azure.Management.Compute.49.1.0\lib\net461\Microsoft.Azure.Management.Compute.dll</HintPath>
+      <HintPath>..\packages\Microsoft.Azure.Management.Compute.50.0.0\lib\net461\Microsoft.Azure.Management.Compute.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Http.Common">
       <HintPath>..\packages\System.Web.Http.Common.4.0.20126.16343\lib\net40\System.Web.Http.Common.dll</HintPath>
@@ -94,7 +94,7 @@
     </Reference>
     <Reference Include="mscorlib" />
     <Reference Include="WebDriver">
-      <HintPath>..\packages\Selenium.WebDriver.3.141.0\lib\net45\WebDriver.dll</HintPath>
+      <HintPath>..\packages\Selenium.WebDriver.4.0.1\lib\net46\WebDriver.dll</HintPath>
     </Reference>
     <Reference Include="System.AppContext">
       <HintPath>..\packages\System.AppContext.4.3.0\lib\net46\System.AppContext.dll</HintPath>
