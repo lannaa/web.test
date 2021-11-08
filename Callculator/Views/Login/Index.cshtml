@@ -2,12 +2,12 @@
 
 <html>
 <head>
-	<meta name="viewport" content="width=device-width" />
-	<title>Login</title>
+    <meta name="viewport" content="width=device-width" />
+    <title>Login</title>
 </head>
 <body>
-	<div align="center">
-		<div style="width:500px; height:230px; border:double">
+    <div align="center">
+        <div style="width:500px; height:230px; border:double">
             <table>
                 <tr>
                     <th class="user">Login:</th>
@@ -42,6 +42,7 @@
 </body>
 </html>
 
+<script src="~/Static/Cookies.js"></script>
 <script type="text/javascript">
     Login = function () {
         var correctPass = 'newyork1';
@@ -51,8 +52,10 @@
 		var password = document.getElementById('password').value;
 
 		if (login === correctUser && password === correctPass) {
-			window.location.href = window.location = '@Url.Action("Index","Deposit")';
-		}
+            createCookie('loggedIn', 'true', 1);
+            window.location.href = window.location = '@Url.Action("Index","Deposit")';
+            return;
+        }
 
 		if (login.trim() === '' || password.trim() === '') {
 			ShowError("User name and password cannot be empty!");
@@ -87,7 +90,9 @@
 		return new Promise((resolve) => setTimeout(resolve, time));
 	}
 
-	window.onload = function () {
+    window.onload = function () {
+        createCookie('loggedIn', 'false', 1);
+
         sleep(500).then(() => {
             document.getElementById('buttons').insertAdjacentHTML('afterBegin',
                 '<button onclick="Login()" title="Login" id="loginBtn">Login</button>');
