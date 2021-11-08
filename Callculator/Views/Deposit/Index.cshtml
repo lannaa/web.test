@@ -14,7 +14,7 @@
                 <tr>
                     <td>Deposit Ammount *</td>
                     <td><input id="amount" oninput="VerifyNumber('amount', 0, 100000); Calculate()"></input></td>
-                    <td>$</td>
+                    <td id="currency">$</td>
                 </tr>
                 <tr>
                     <td>Rate of intereset: *</td>
@@ -70,6 +70,7 @@
 </body>
 </html>
 
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
 <script src="~/Static/Cookies.js"></script>
 <script type="text/javascript">
 	Date.prototype.yyyymmdd = function () {
@@ -93,7 +94,15 @@
 		var year = document.getElementById('year').value;
 		var days = Number(document.getElementById('term').value);
 
-        document.getElementById('endDate').value = new Date(year, month, day + days).yyyymmdd();
+        $.ajax({
+            type: 'GET',
+            url: '@Url.Action("Date", "Settings")',
+            data : {'date' : new Date(year, month, day + days).yyyymmdd()},
+            dataType: 'json',
+            success: function (response) {
+                document.getElementById('endDate').value = response;
+            }
+        });
     }
 
 	ResetMonth = function () {
@@ -156,7 +165,7 @@
         }
     }
 
-    Calculate = function (id) {
+    async function Calculate (id) {
         if (id !== undefined) { document.getElementById(id).checked = false; }
 
         var amount = Number(document.getElementById('amount').value);
@@ -166,20 +175,44 @@
         var interest = amount * percent * days / (year * 100);
         var income = amount + interest;
 
-        document.getElementById('interest').value = interest.toFixed(2);
-        document.getElementById('income').value = income.toFixed(2);
-
         CalculateDate();
+
+        await SetNumber('interest', interest);
+        await SetNumber('income', income);
+        return Promise.resolve('done');
     }
 
     VerifyLoggedIn = function() {
         if (getCookie('loggedIn') != 'true') {
-            console.log("logged OUT");
             window.location.href = window.location = '@Url.Action("Index","Login")';
-            console.log("logged IN!!");
         }
     }
 
+    SetCurrency = function() {
+        $.ajax({
+            type: 'GET',
+            url: '@Url.Action("Currency", "Settings")',
+            dataType: 'json',
+            success: function (response) {
+                document.getElementById('currency').textContent = response;
+            }
+        });
+    }
+
+     async function SetNumber(id, number) {
+        $.ajax({
+            type: 'GET',
+            url: '@Url.Action("Number", "Settings")',
+            data: { 'number': number },
+            dataType: 'json',
+            success: function (response) {
+                document.getElementById(id).value = response;
+                return Promise.resolve(response);
+            }
+        }).then(function () { return Promise.resolve('done'); });
+    }
+
+    SetCurrency();
     SetCurrentDate();
     Calculate();
     VerifyLoggedIn();
