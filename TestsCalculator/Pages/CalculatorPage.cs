@@ -25,6 +25,7 @@ namespace TestsCalculator.Pages
         public string Income => _driver.FindElement(By.Id("income")).GetAttribute("value");
         public string Interest => _driver.FindElement(By.Id("interest")).GetAttribute("value");
         public string EndDate => _driver.FindElement(By.Id("endDate")).GetAttribute("value");
+        public IWebElement SettingsBtn => _driver.FindElement(By.XPath("//div[text()=\"Settings\"]")); 
 
         public string StartDate
         {
