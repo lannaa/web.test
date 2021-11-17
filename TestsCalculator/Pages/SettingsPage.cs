@@ -1,5 +1,4 @@
-﻿using System;
-using OpenQA.Selenium;
+﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 
 namespace TestsCalculator.Pages
@@ -21,8 +20,7 @@ namespace TestsCalculator.Pages
         public SelectElement CurrencyFormatOptions => new SelectElement(_driver.FindElement(By.Id("currency")));
         public IWebElement SaveBtn => _driver.FindElement(By.Id("save"));
         public IWebElement CancelBtn => _driver.FindElement(By.Id("cancel"));
-        public IWebElement CurrencySymbol => _driver.FindElement(By.Id("currency"));
-    
-        }
+    }
+   
     }
 
