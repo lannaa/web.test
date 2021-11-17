@@ -195,5 +195,30 @@ namespace TestsCalculator
             //Assert
             Assert.AreEqual(DateTime.Today.ToString("d/M/yyyy"), calculatorPage.StartDate);
         }
+
+        [Test]
+        public void CheckSettingsBtnDisplayed()
+        {
+            //Arrange
+            CalculatorPage calculatorPage = new CalculatorPage(driver);
+
+            //Assert
+            Assert.IsTrue(calculatorPage.SettingsBtn.Displayed);
+        }
+
+        [Test]
+        public void CheckSettingsBtnNavigation()
+        {
+            //Arrange
+            CalculatorPage calculatorPage = new CalculatorPage(driver);
+
+            //Act
+            calculatorPage.SettingsBtn.Click();
+
+            //Assert
+            string actualUrl = driver.Url;
+            string expectedUrl = "http://127.0.0.1:8080/Settings";
+            Assert.AreEqual(expectedUrl, actualUrl);
+        }
     }
 }
