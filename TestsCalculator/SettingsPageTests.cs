@@ -41,9 +41,9 @@ namespace TestsCalculator
             SettingsPage settingsPage = new SettingsPage(driver);
 
             //Assert
-            Assert.IsTrue(settingsPage.DateFormat.Displayed);
-            Assert.IsTrue(settingsPage.NumberFormat.Displayed);
-            Assert.IsTrue(settingsPage.Currency.Displayed);
+            Assert.IsTrue(settingsPage.DateFormatText.Displayed);
+            Assert.IsTrue(settingsPage.NumberFormatText.Displayed);
+            Assert.IsTrue(settingsPage.CurrencyFormatText.Displayed);
         }
 
         [Test]
@@ -195,6 +195,5 @@ namespace TestsCalculator
             string expectedUrl = "http://127.0.0.1:8080/";
             Assert.AreEqual(expectedUrl, actualUrl);
         }
-
     }
 }
