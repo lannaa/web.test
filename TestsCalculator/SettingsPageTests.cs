@@ -35,13 +35,25 @@ namespace TestsCalculator
         }
 
         [Test]
+        public void CheckFieldNamesDisplayed()
+        {
+            //Arrange
+            SettingsPage settingsPage = new SettingsPage(driver);
+
+            //Assert
+            Assert.IsTrue(settingsPage.DateFormat.Displayed);
+            Assert.IsTrue(settingsPage.NumberFormat.Displayed);
+            Assert.IsTrue(settingsPage.Currency.Displayed);
+        }
+
+        [Test]
         public void CheckDateFormatOptions()
         {
-            // Arrange
+            //Arrange
             SettingsPage settingsPage = new SettingsPage(driver);
             List<string> expectedDateFormat = new List<string> { "dd/MM/yyyy", "dd-MM-yyyy", "MM/dd/yyyy", "MM dd yyyy" };
 
-            // Act
+            //Act
             SelectElement s = settingsPage.DateFormatOptions;
 
             IList<string> actualDateFormat = new List<string>();
@@ -49,18 +61,18 @@ namespace TestsCalculator
             {
                 actualDateFormat.Add(s.Options.ElementAt(j).Text);
             }
-            // Assert
+            //Assert
             Assert.AreEqual(expectedDateFormat, actualDateFormat);
         }
 
         [Test]
         public void CheckNumberFormatOptions()
         {
-            // Arrange
+            //Arrange
             SettingsPage settingsPage = new SettingsPage(driver);
             List<string> expectedNumberFormat = new List<string> { "123,456,789.00", "123.456.789,00", "123 456 789.00", "123 456 789,00" };
 
-            // Act
+            //Act
             SelectElement s = settingsPage.NumberFormatOptions;
             IList<string> actualNumberFormat = new List<string>();
             for (int j = 0; j < s.Options.Count; j++)
@@ -68,18 +80,18 @@ namespace TestsCalculator
                 actualNumberFormat.Add(s.Options.ElementAt(j).Text);
             }
 
-            // Assert
+            //Assert
             Assert.AreEqual(expectedNumberFormat, actualNumberFormat);
         }
 
         [Test]
         public void CheckCurrencyFormatOptions()
         {
-            // Arrange
+            //Arrange
             SettingsPage settingsPage = new SettingsPage(driver);
             List<string> expectedCurrencyFormat = new List<string> { "$ - US dollar", "€ - euro", "£ - Great Britain Pound" };
 
-            // Act
+            //Act
             SelectElement s = settingsPage.CurrencyFormatOptions;
             IList<string> actualCurrencyFormat = new List<string>();
             for (int j = 0; j < s.Options.Count; j++)
@@ -87,20 +99,20 @@ namespace TestsCalculator
                 actualCurrencyFormat.Add(s.Options.ElementAt(j).Text);
             }
 
-            // Assert
+            //Assert
             Assert.AreEqual(expectedCurrencyFormat, actualCurrencyFormat);
         }
 
         [Test]
         public void CancelBtnOpensDepositPage()
         {
-            // Arrange
+            //Arrange
             SettingsPage settingsPage = new SettingsPage(driver);
 
-            // Act
+            //Act
             settingsPage.CancelBtn.Click();
 
-            // Assert
+            //Assert
             string actualUrl = driver.Url;
             string expectedUrl = "http://127.0.0.1:8080/Deposit";
             Assert.AreEqual(expectedUrl, actualUrl);
@@ -112,17 +124,17 @@ namespace TestsCalculator
         [TestCase("dd/MM/yyyy", "dd/M/yyyy")]
         public void SaveDateFormat(string dateFormat, string dateDisplay)
         {
-            // Arrange
+            //Arrange
             SettingsPage settingsPage = new SettingsPage(driver);
             CalculatorPage calculatorPage = new CalculatorPage(driver);
 
-            // Act
+            //Act
             settingsPage.DateFormatOptions.SelectByText(dateFormat);
             settingsPage.SaveBtn.Click();
             IAlert alert = driver.SwitchTo().Alert();
             alert.Accept();
 
-            // Assert
+            //Assert
             Assert.AreEqual(DateTime.Today.ToString(dateDisplay), calculatorPage.EndDate);
         }
 
@@ -132,17 +144,16 @@ namespace TestsCalculator
         [TestCase("123,456,789.00", "100,000.00")]
         public void SaveNumberFormat(string number, string income)
         {
-            // Arrange
+            //Arrange
             SettingsPage settingsPage = new SettingsPage(driver);
             CalculatorPage calculatorPage = new CalculatorPage(driver);
 
-            // Act
+            //Act
             settingsPage.NumberFormatOptions.SelectByText(number);
             settingsPage.SaveBtn.Click();
             IAlert alert = driver.SwitchTo().Alert();
             alert.Accept();
-
-            // Fill data to verify
+            //Fill data to verify
             calculatorPage.AmountField.SendKeys("100000");
 
             // Assert
@@ -154,20 +165,36 @@ namespace TestsCalculator
         [TestCase("$ - US dollar", "$")]
         public void SaveCurrencyFormat(string currency, string currencySymbol)
         {
-            // Arrange
+            //Arrange
             SettingsPage settingsPage = new SettingsPage(driver);
             CalculatorPage calculatorPage = new CalculatorPage(driver);
 
-            // Act
+            //Act
             settingsPage.CurrencyFormatOptions.SelectByText(currency);
             settingsPage.SaveBtn.Click();
             IAlert alert = driver.SwitchTo().Alert();
             alert.Accept();
 
-            // Assert
+            //Assert
             Assert.IsTrue(calculatorPage.CurrencySymbol.Displayed);
             // currency symbol is not found 
             //  Assert.AreEqual(currencySymbol, calculatorPage.CurrencySymbol);
         }
+
+        [Test]
+        public void LogoutBtn()
+        {
+            //Arrange
+            SettingsPage settingsPage = new SettingsPage(driver);
+
+            //Act
+            settingsPage.LogoutBtn.Click();
+
+            //Assert
+            string actualUrl = driver.Url;
+            string expectedUrl = "http://127.0.0.1:8080/";
+            Assert.AreEqual(expectedUrl, actualUrl);
+        }
+
     }
 }
