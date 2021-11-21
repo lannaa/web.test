@@ -50,17 +50,17 @@ namespace TestsCalculator
             driver.Close();
         }
 
-        [Test]
-        public void CheckFieldNamesDisplayed()
-        {
-            //Arrange
-            SettingsPage settingsPage = new SettingsPage(driver);
+        //[Test]
+        //public void CheckFieldNamesDisplayed()
+        //{
+        //    //Arrange
+        //    SettingsPage settingsPage = new SettingsPage(driver);
 
-            //Assert
-            Assert.IsTrue(settingsPage.DateFormatText.Displayed);
-            Assert.IsTrue(settingsPage.NumberFormatText.Displayed);
-            Assert.IsTrue(settingsPage.CurrencyFormatText.Displayed);
-        }
+        //    //Assert
+        //    Assert.IsTrue(settingsPage.DateFormatText.Displayed);
+        //    Assert.IsTrue(settingsPage.NumberFormatText.Displayed);
+        //    Assert.IsTrue(settingsPage.CurrencyFormatText.Displayed);
+        //}
 
         [Test]
         public void CheckDateFormatOptions()
