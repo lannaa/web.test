@@ -5,13 +5,11 @@ using OpenQA.Selenium.Support.UI;
 
 namespace TestsCalculator.Pages
 {
-    public class CalculatorPage
+    public class CalculatorPage : BasePage
     {
-        private IWebDriver _driver;
-
-        public CalculatorPage(IWebDriver driver)
+        public CalculatorPage(IWebDriver driver): base(driver)
         {
-            _driver = driver;
+            PageName = "Deposite calculator";
         }
 
         public IWebElement AmountField => _driver.FindElement(By.Id("amount"));
@@ -25,8 +23,8 @@ namespace TestsCalculator.Pages
         public string Income => _driver.FindElement(By.Id("income")).GetAttribute("value");
         public string Interest => _driver.FindElement(By.Id("interest")).GetAttribute("value");
         public string EndDate => _driver.FindElement(By.Id("endDate")).GetAttribute("value");
-        public IWebElement CurrencySymbol => _driver.FindElement(By.XPath("(//td [@id=\"currency\"])"));
-        public IWebElement SettingsBtn => _driver.FindElement(By.XPath("//div[text()=\"Settings\"]")); 
+        public string CurrencySymbol => _driver.FindElement(By.XPath("(//td [@id='currency'])")).Text;
+        public IWebElement SettingsBtn => _driver.FindElement(By.XPath("//div[text()='Settings']")); 
 
         public string StartDate
         {

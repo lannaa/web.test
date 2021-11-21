@@ -3,25 +3,29 @@ using OpenQA.Selenium.Support.UI;
 
 namespace TestsCalculator.Pages
 {
-    public class SettingsPage
+    public class SettingsPage : BasePage
     {
-        private IWebDriver _driver;
+        private object driver;
 
-        public SettingsPage(IWebDriver driver)
+        public SettingsPage(IWebDriver driver) : base(driver) 
         {
-            _driver = driver;
+            PageName = "Settings";
         }
 
-        public IWebElement DateFormat => _driver.FindElement(By.XPath("//th[text()=\"Date format:\"]"));
-        public SelectElement DateFormatOptions => new SelectElement(_driver.FindElement(By.Id("dateFormat")));
-        public IWebElement NumberFormat => _driver.FindElement(By.XPath("//th[text()=\"Number format:\"]"));
-        public SelectElement NumberFormatOptions => new SelectElement(_driver.FindElement(By.Id("numberFormat")));
-        public IWebElement Currency => _driver.FindElement(By.XPath("//th[text()=\"Default currency:\"]"));
-        public SelectElement CurrencyFormatOptions => new SelectElement(_driver.FindElement(By.Id("currency")));
+        public string DateText => _driver.FindElement(By.XPath("//th[text()='Date format:']")).Text;
+        public string NumberText => _driver.FindElement(By.XPath("//th[text()='Number format:']")).Text;
+        public string CurrencyText => _driver.FindElement(By.XPath("//th[text()='Default currency:']")).Text;
+        public SelectElement DateFormat => new SelectElement(_driver.FindElement(By.Id("dateFormat")));
+        public SelectElement NumberFormat => new SelectElement(_driver.FindElement(By.Id("numberFormat")));
+        public SelectElement Currency => new SelectElement(_driver.FindElement(By.Id("currency")));
         public IWebElement SaveBtn => _driver.FindElement(By.Id("save"));
         public IWebElement CancelBtn => _driver.FindElement(By.Id("cancel"));
-        public IWebElement LogoutBtn => _driver.FindElement(By.XPath("//div[text()=\"Logout\"]"));
-    }
-   
-    }
+        public IWebElement LogoutBtn => _driver.FindElement(By.XPath("//div[text()='Logout']"));
 
+        public void Save()
+        {
+            SaveBtn.Click();
+            _driver.SwitchTo().Alert().Accept();
+        }
+    }
+}       
