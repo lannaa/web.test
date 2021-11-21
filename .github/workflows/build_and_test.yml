@@ -23,10 +23,10 @@ jobs:
         run: cd ./Callculator/bin/Release/net5.0 && start Callculator.exe
         
       - name: Tests - restore dependencies
-        run: dotnet restore TestsCalculator.sln
+        run: dotnet restore TestsCalculator/TestsCalculator.sln
         
       - name: Tests - Build
-        run: dotnet build TestsCalculator.sln --configuration Release --no-restore
+        run: dotnet build TestsCalculator/TestsCalculator.sln --configuration Release --no-restore
         
       - name: Tests - Run
-        run: dotnet test TestsCalculator.sln --configuration Release --no-restore --verbosity Minimal
+        run: dotnet test TestsCalculator/TestsCalculator.sln --configuration Release --no-restore --verbosity Minimal
