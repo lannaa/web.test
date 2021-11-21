@@ -20,7 +20,7 @@ jobs:
         run: dotnet build Callculator.sln --configuration Release --no-restore
         
       - name: Callculator - Launch
-        run: cd ./Callculator/bin/Release/net5.0 && Callculator.exe
+        run: cd ./Callculator/bin/Release/net5.0 && start Callculator.exe
         
       - name: Tests - restore dependencies
         run: dotnet restore TestsCalculator/TestsCalculator.sln
