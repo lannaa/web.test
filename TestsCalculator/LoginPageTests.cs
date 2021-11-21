@@ -1,7 +1,9 @@
+using System;
+using System.Configuration;
+using System.Reflection;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-using System;
 using TestsCalculator.Pages;
 
 namespace TestsCalculator
@@ -9,14 +11,27 @@ namespace TestsCalculator
     public class LoginPageTests
     {
         private IWebDriver driver;
+        private string BaseUrl => ConfigurationManager.OpenExeConfiguration(Assembly.GetExecutingAssembly().Location).AppSettings.Settings["BaseUrl"].Value;
 
         [SetUp]
         public void Setup()
         {
-            driver = new ChromeDriver();
+            var chromeDriverService = ChromeDriverService.CreateDefaultService();
+            chromeDriverService.HideCommandPromptWindow = true;
+            chromeDriverService.SuppressInitialDiagnosticInformation = true;
+
+            var options = new ChromeOptions
+            {
+                UnhandledPromptBehavior = UnhandledPromptBehavior.Ignore,
+                AcceptInsecureCertificates = true
+            };
+            options.AddArgument("--silent");
+            options.AddArgument("log-level=3");
+
+            driver = new ChromeDriver(chromeDriverService, options);
             driver.Manage().Timeouts().PageLoad = TimeSpan.FromSeconds(30);
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-            driver.Url = "http://127.0.0.1:8080/";
+            driver.Url = BaseUrl;
         }
 
         [TearDown]
@@ -36,7 +51,7 @@ namespace TestsCalculator
 
             // Assert
             string actualUrl = driver.Url;
-            string expectedUrl = "http://127.0.0.1:8080/Deposit";
+            string expectedUrl = $"{BaseUrl}/Deposit";
             Assert.AreEqual(expectedUrl, actualUrl);
         }
 

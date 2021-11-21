@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Linq;
+using System.Reflection;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
-using System.Collections.Generic;
-using System.Linq;
 using TestsCalculator.Pages;
 
 namespace TestsCalculator
@@ -12,14 +14,28 @@ namespace TestsCalculator
     public class SettingsPageTests
     {
         private IWebDriver driver;
+        private string BaseUrl => ConfigurationManager.OpenExeConfiguration(Assembly.GetExecutingAssembly().Location).AppSettings.Settings["BaseUrl"].Value;
+
 
         [SetUp]
         public void SetUp()
         {
-            driver = new ChromeDriver();
+            var chromeDriverService = ChromeDriverService.CreateDefaultService();
+            chromeDriverService.HideCommandPromptWindow = true;
+            chromeDriverService.SuppressInitialDiagnosticInformation = true;
+
+            var options = new ChromeOptions
+            {
+                UnhandledPromptBehavior = UnhandledPromptBehavior.Ignore,
+                AcceptInsecureCertificates = true
+            };
+            options.AddArgument("--silent");
+            options.AddArgument("log-level=3");
+
+            driver = new ChromeDriver(chromeDriverService, options);
             driver.Manage().Timeouts().PageLoad = TimeSpan.FromSeconds(30);
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-            driver.Url = "http://127.0.0.1:8080/";
+            driver.Url = BaseUrl;
 
             LoginPage loginPage = new LoginPage(driver);
             loginPage.Login("test", "newyork1");
@@ -114,7 +130,7 @@ namespace TestsCalculator
 
             //Assert
             string actualUrl = driver.Url;
-            string expectedUrl = "http://127.0.0.1:8080/Deposit";
+            string expectedUrl = $"{BaseUrl}/Deposit";
             Assert.AreEqual(expectedUrl, actualUrl);
         }
 
@@ -192,7 +208,7 @@ namespace TestsCalculator
 
             //Assert
             string actualUrl = driver.Url;
-            string expectedUrl = "http://127.0.0.1:8080/";
+            string expectedUrl = BaseUrl;
             Assert.AreEqual(expectedUrl, actualUrl);
         }
     }
