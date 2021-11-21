@@ -5,12 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Update="wwwroot\js\cookies.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\RemindPassword.html">
+    <Content Update="wwwroot\**\*">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-
 </Project>

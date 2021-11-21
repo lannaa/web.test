@@ -91,7 +91,7 @@ namespace Callculator.Controllers
         public IActionResult Save(string dateFormat, string numberFormat, string currency)
         {
             System.IO.File.WriteAllText(settings, $"{dateFormat};{numberFormat};{currency}");
-            return Ok();
+            return Json("Ok");
         }
 
         class Settings

@@ -208,7 +208,7 @@ namespace TestsCalculator
 
             //Assert
             string actualUrl = driver.Url;
-            string expectedUrl = BaseUrl;
+            string expectedUrl = BaseUrl + "/";
             Assert.AreEqual(expectedUrl, actualUrl);
         }
     }
