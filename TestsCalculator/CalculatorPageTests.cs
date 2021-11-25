@@ -1,13 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
-using System.Reflection;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using TestsCalculator.Pages;
-using System.Threading;
 
 namespace TestsCalculator
 {
@@ -33,30 +30,30 @@ namespace TestsCalculator
         }
 
         //Check min amount
-        [TestCase("1", "90", "300 ", "1.74", "0.74")]
+        [TestCase("1", "90", "300", "1.74", "0.74")]
         //Check max amount
-        [TestCase("100000", "10", "20 ", "100 547.95", "547.95")]
+        [TestCase("100000", "10", "20", "100 547.95", "547.95")]
         //Check max percent
-        [TestCase("1000", "99.9", "300 ", "1 821.10", "821.10")]
-        [TestCase("1000", "100", "300 ", "1 821.92", "821.92")]
+        [TestCase("1000", "99.9", "300", "1 821.10", "821.10")]
+        [TestCase("1000", "100", "300", "1 821.92", "821.92")]
         //Check min percent
-        [TestCase("1000", "0.1", "300 ", "1 000.82", "0.82")]
+        [TestCase("1000", "0.1", "300", "1 000.82", "0.82")]
         //Check max term
-        [TestCase("1000", "90", "365 ", "1 900.00", "900.00")]
+        [TestCase("1000", "90", "365", "1 900.00", "900.00")]
         //Check min term
         [TestCase("10000", "90", "0.1", "10 002.47", "2.47")]
         //Check invalid amount - min value
-        [TestCase("0", "90", "300 ", "0.00", "0.00")]
+        [TestCase("0", "90", "300", "0.00", "0.00")]
         //Check invalid amount - max value
-        [TestCase("100001", "30", "300 ", "0.00", "0.00")]
+        [TestCase("100001", "30", "300", "0.00", "0.00")]
         //Check invalid percent - min value
-        [TestCase("1000", "0", "300 ", "1 000.00", "0.00")]
+        [TestCase("1000", "0", "300", "1 000.00", "0.00")]
         //Check invalid percent - max value
-        [TestCase("1000", "120", "300 ", "1 000.00", "0.00")]
+        [TestCase("1000", "120", "300", "1 000.00", "0.00")]
         //Сheck invalid term - min value
         [TestCase("1000", "90", "0", "1 000.00", "0.00")]
         //Check invalid term - max value
-        [TestCase("1000", "90", "366 ", "1 000.00", "0.00")]
+        [TestCase("1000", "90", "366", "1 000.00", "0.00")]
         public void FillFormTest(string amount, string percent, string term, string income, string interest)
         {
             //Arrange
@@ -66,7 +63,7 @@ namespace TestsCalculator
             calculatorPage.AmountField.SendKeys(amount);
             calculatorPage.PercentField.SendKeys(percent);
             calculatorPage.TermField.SendKeys(term);
-            Thread.Sleep(10000);
+            calculatorPage.CalculateBtn.Click();
 
             //Assert
             Assert.AreEqual(income, calculatorPage.Income);
@@ -94,7 +91,7 @@ namespace TestsCalculator
             calculatorPage.PercentField.SendKeys("10");
             calculatorPage.TermField.SendKeys("20 ");
             calculatorPage.DaysRadioBtn360.Click();
-            // Thread.Sleep(1000);
+            calculatorPage.CalculateBtn.Click();
 
             //Assert
             Assert.AreEqual("1 005.56", calculatorPage.Income);
