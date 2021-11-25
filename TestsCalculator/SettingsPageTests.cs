@@ -113,7 +113,7 @@ namespace TestsCalculator
             Assert.AreEqual(DateTime.Today.ToString(dateFormat), calculatorPage.EndDate);
         }
 
-        [TestCase("123 456 789,00", "102 739.73")]
+        [TestCase("123 456 789,00", "102 739,73")]
         [TestCase("123 456 789.00", "102 739.73")]
         [TestCase("123.456.789,00", "102.739,73")]
         [TestCase("123,456,789.00", "102,739.73")]

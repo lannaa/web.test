@@ -42,19 +42,7 @@ namespace TestsCalculator
         [TestCase("1000", "90", "365", "1 900.00", "900.00")]
         //Check min term
         [TestCase("10000", "90", "0.1", "10 002.47", "2.47")]
-        //Check invalid amount - min value
-        [TestCase("0", "90", "300", "0.00", "0.00")]
-        //Check invalid amount - max value
-        [TestCase("100001", "30", "300", "0.00", "0.00")]
-        //Check invalid percent - min value
-        [TestCase("1000", "0", "300", "1 000.00", "0.00")]
-        //Check invalid percent - max value
-        [TestCase("1000", "120", "300", "1 000.00", "0.00")]
-        //Сheck invalid term - min value
-        [TestCase("1000", "90", "0", "1 000.00", "0.00")]
-        //Check invalid term - max value
-        [TestCase("1000", "90", "366", "1 000.00", "0.00")]
-        public void FillFormTest(string amount, string percent, string term, string income, string interest)
+        public void ValidFillFormTest(string amount, string percent, string term, string income, string interest)
         {
             //Arrange
             CalculatorPage calculatorPage = new CalculatorPage(driver);
@@ -69,6 +57,34 @@ namespace TestsCalculator
             Assert.AreEqual(income, calculatorPage.Income);
             Assert.AreEqual(interest, calculatorPage.Interest);
         }
+
+        //Check invalid amount - min value
+        [TestCase("0", "90", "300", "0.00", "0.00")]
+        //Check invalid amount - max value
+        [TestCase("100001", "30", "300", "0.00", "0.00")]
+        //Check invalid percent - min value
+        [TestCase("1000", "0", "300", "0.00", "0.00")]
+        //Check invalid percent - max value
+        [TestCase("1000", "120", "300", "0.00", "0.00")]
+        //Сheck invalid term - min value
+        [TestCase("1000", "90", "0", "0.00", "0.00")]
+        //Check invalid term - max value
+        [TestCase("1000", "90", "366", "0.00", "0.00")]
+        public void FillFormNegativeTest(string amount, string percent, string term, string income, string interest)
+        {
+            //Arrange
+            CalculatorPage calculatorPage = new CalculatorPage(driver);
+
+            //Act
+            calculatorPage.AmountField.SendKeys(amount);
+            calculatorPage.PercentField.SendKeys(percent);
+            calculatorPage.TermField.SendKeys(term);
+
+            //Assert
+            Assert.AreEqual(income, calculatorPage.Income);
+            Assert.AreEqual(interest, calculatorPage.Interest);
+        }
+
 
         [Test]
         public void CheckDefaultRadioBtnOptionTest()
@@ -89,7 +105,7 @@ namespace TestsCalculator
             //Act
             calculatorPage.AmountField.SendKeys("1000");
             calculatorPage.PercentField.SendKeys("10");
-            calculatorPage.TermField.SendKeys("20 ");
+            calculatorPage.TermField.SendKeys("20");
             calculatorPage.DaysRadioBtn360.Click();
             calculatorPage.CalculateBtn.Click();
 
