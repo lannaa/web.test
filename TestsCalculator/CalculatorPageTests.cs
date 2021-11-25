@@ -85,7 +85,6 @@ namespace TestsCalculator
             Assert.AreEqual(interest, calculatorPage.Interest);
         }
 
-
         [Test]
         public void CheckDefaultRadioBtnOptionTest()
         {

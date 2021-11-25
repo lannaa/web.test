@@ -44,5 +44,5 @@ namespace TestsCalculator.Pages
                 Year.SelectByText(date.ToString("yyyy"));
             }
         }
-}
+    }
 }

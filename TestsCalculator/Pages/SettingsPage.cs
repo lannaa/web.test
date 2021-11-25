@@ -5,8 +5,6 @@ namespace TestsCalculator.Pages
 {
     public class SettingsPage : BasePage
     {
-        private object driver;
-
         public SettingsPage(IWebDriver driver) : base(driver) 
         {
             PageName = "Settings";
