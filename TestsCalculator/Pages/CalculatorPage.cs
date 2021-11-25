@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
@@ -44,5 +45,5 @@ namespace TestsCalculator.Pages
                 Year.SelectByText(date.ToString("yyyy"));
             }
         }
-    }
+}
 }
