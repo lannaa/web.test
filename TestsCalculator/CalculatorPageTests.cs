@@ -1,9 +1,11 @@
 using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Linq;
+using System.Reflection;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
-using System.Collections.Generic;
-using System.Linq;
 using TestsCalculator.Pages;
 using System.Threading;
 
@@ -15,7 +17,6 @@ namespace TestsCalculator
         public void Setup()
         {
             OpenDriver();
-
             LoginPage loginPage = new LoginPage(driver);
             loginPage.Login("test", "newyork1");
 
@@ -80,7 +81,7 @@ namespace TestsCalculator
 
             //Assert
             Assert.True(calculatorPage.DaysRadioBtn365.Selected);
-        } 
+        }
 
         [Test]
         public void SelectRadioBtn360()
@@ -115,7 +116,7 @@ namespace TestsCalculator
 
             //Act
             calculatorPage.TermField.SendKeys(term);
-            calculatorPage.StartDate = date; 
+            calculatorPage.StartDate = date;
 
             //Assert
             Assert.AreEqual(endDate, calculatorPage.EndDate, "Date is incorrect");
@@ -149,7 +150,7 @@ namespace TestsCalculator
         {
             //Arrange
             CalculatorPage calculatorPage = new CalculatorPage(driver);
-            List<string> expectedMonths = new List<string> {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
+            List<string> expectedMonths = new List<string> { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
 
             //Act 
             SelectElement s = calculatorPage.Month;

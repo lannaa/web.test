@@ -1,9 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
-using System.Collections.Generic;
-using System.Linq;
 using TestsCalculator.Pages;
 using System.Threading;
 
@@ -15,7 +15,6 @@ namespace TestsCalculator
         public void SetUp()
         {
             OpenDriver();
-     
             LoginPage loginPage = new LoginPage(driver);
             loginPage.Login("test", "newyork1");
 

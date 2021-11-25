@@ -1,0 +1,32 @@
+name: .NET
+
+on: pull_request
+
+jobs:
+  build_and_test:
+
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup .NET Core SDK '5.0.x'
+        uses: actions/setup-dotnet@v1.7.2
+        with:
+          dotnet-version: '5.0.x'
+
+      - name: Callculator - restore dependencies
+        run: dotnet restore Callculator.sln
+        
+      - name: Callculator - Build
+        run: dotnet build Callculator.sln --configuration Release --no-restore
+        
+      - name: Callculator - Launch
+        run: cd ./Callculator/bin/Release/net5.0 && start Callculator.exe
+        
+      - name: Tests - restore dependencies
+        run: dotnet restore TestsCalculator/TestsCalculator.sln
+        
+      - name: Tests - Build
+        run: dotnet build TestsCalculator/TestsCalculator.sln --configuration Release --no-restore
+        
+      - name: Tests - Run
+        run: dotnet test TestsCalculator/TestsCalculator.sln --configuration Release --no-restore --verbosity Minimal

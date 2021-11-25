@@ -2,32 +2,34 @@
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Web.Mvc;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 
 namespace Callculator.Controllers
 {
+    [Route("api/[controller]")]
     public class SettingsController : Controller
     {
         private readonly string settings = $"{Path.GetTempPath()}/settings.data";
 
-        public ActionResult Index()
+        public IActionResult Index()
         {
             return View();
         }
 
-        [HttpGet]
-        public ActionResult Date(string date)
+        [HttpGet("date")]
+        public IActionResult Date(string date)
         {
             var dateTime = DateTime.ParseExact(date, "dd/MM/yyyy", CultureInfo.InvariantCulture);
             var format = System.IO.File.Exists(settings)
                 ? System.IO.File.ReadAllText(settings).Split(';')[0]
                 : "dd/MM/yyyy";
 
-            return Json(dateTime.ToString(format, CultureInfo.InvariantCulture), JsonRequestBehavior.AllowGet);
+            return Json(dateTime.ToString(format, CultureInfo.InvariantCulture));
         }
 
-        [HttpGet]
-        public ActionResult Number(decimal number)
+        [HttpGet("number")]
+        public IActionResult Number(decimal number)
         {
             var result = Math.Round(number, 2, MidpointRounding.AwayFromZero)
                 .ToString("N", CultureInfo.InvariantCulture);
@@ -50,21 +52,21 @@ namespace Callculator.Controllers
                     break;
             }
 
-            return Json(result, JsonRequestBehavior.AllowGet);
+            return Json(result);
         }
 
-        [HttpGet]
-        public ActionResult Currency()
+        [HttpGet("currency")]
+        public IActionResult Currency()
         {
             var result = System.IO.File.Exists(settings)
                 ? System.IO.File.ReadAllText(settings).Split(';')[2]
                 : "$ - US dollar";
 
-            return Json(result.Split(' ').First(), JsonRequestBehavior.AllowGet);
+            return Json(result.Split(' ').First());
         }
 
         [HttpGet]
-        public ActionResult Get()
+        public IActionResult Get()
         {
             var result = new Settings
             {
@@ -82,14 +84,14 @@ namespace Callculator.Controllers
                 result.Currency = values[2];
             }
 
-            return Json(result, JsonRequestBehavior.AllowGet);
+            return Json(result);
         }
 
         [HttpPost]
-        public ActionResult Save(string dateFormat, string numberFormat, string currency)
+        public IActionResult Save(string dateFormat, string numberFormat, string currency)
         {
             System.IO.File.WriteAllText(settings, $"{dateFormat};{numberFormat};{currency}");
-            return Json("OK");
+            return Json("Ok");
         }
 
         class Settings

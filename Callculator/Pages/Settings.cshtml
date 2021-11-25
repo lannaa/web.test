@@ -1,0 +1,126 @@
+﻿@page
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Settings</title>
+</head>
+<body>
+    <div align="center">
+        <div style="width: 500px; height: 250px; border: double">
+            <div style="text-align: right; cursor: pointer" onclick="window.location = '/'">Logout</div>
+
+            <table>
+                <tr>
+                    <th>Date format:</th>
+                    <td>
+                        <select id="dateFormat" disabled="disabled">
+                            <option>dd/MM/yyyy</option>
+                            <option>dd-MM-yyyy</option>
+                            <option>MM/dd/yyyy</option>
+                            <option>MM dd yyyy</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Number format:</th>
+                    <td>
+                        <select id="numberFormat" disabled="disabled">
+                            <option>123,456,789.00</option>
+                            <option>123.456.789,00</option>
+                            <option>123 456 789.00</option>
+                            <option>123 456 789,00</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Default currency:</th>
+                    <td>
+                        <select id="currency" disabled="disabled">
+                            <option>$ - US dollar</option>
+                            <option>&euro; - euro</option>
+                            <option>&pound; - Great Britain Pound</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr><td style="height: 50px" /></tr>
+            </table>
+
+            <div align="center">
+                <button onclick="Save(); window.location = 'Deposit';" title="Save" id="save">Save</button>
+                <button onclick="window.location = 'Deposit'" title="Save" id="cancel">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="lib/jquery/dist/jquery.min.js"></script>
+    <script src="js/Cookies.js"></script>
+    <script>
+        var dateFormat = document.getElementById('dateFormat');
+        var numberFormat = document.getElementById('numberFormat');
+        var currency = document.getElementById('currency');
+        function Save() {
+            $.ajax({
+                type: 'POST',
+                url: 'api/settings',
+                data: {
+                    'dateFormat': dateFormat.options[dateFormat.selectedIndex].textContent,
+                    'numberFormat': numberFormat.options[numberFormat.selectedIndex].textContent,
+                    'currency': currency.options[currency.selectedIndex].textContent
+                },
+                dataType: 'json',
+                success: function (response) {
+                    alert('Changes are saved!');
+                }
+            });
+        }
+
+        function select(dropdown, value) {
+            for (var i = 0; i < dropdown.options.length; i++) {
+                if (dropdown.options[i].text === value) {
+                    dropdown.selectedIndex = i;
+                    break;
+                }
+            }
+
+            dropdown.disabled = false;
+        }
+
+        function Get() {
+            $.ajax({
+                type: 'GET',
+                url: 'api/settings',
+                dataType: 'json',
+                success: function (response) {
+                    select(dateFormat, response.dateFormat);
+                    select(numberFormat, response.numberFormat);
+                    select(currency, response.currency);
+                }
+            });
+        }
+        function sleep(time) {
+            return new Promise((resolve) => setTimeout(resolve, time));
+        }
+        function show(id) { document.getElementById(id).style.display = "initial"; }
+        function hide(id) { document.getElementById(id).style.display = "none"; }
+
+        VerifyLoggedIn = function () {
+            if (getCookie('loggedIn') != 'true') {
+                window.location.href = window.location = '/';
+            }
+        }
+
+        Get();
+        hide('save');
+        hide('cancel');
+        sleep(500).then(() => {
+            show('save');
+            sleep(500).then(() => show('cancel'));
+        });
+
+        VerifyLoggedIn();
+    </script>
+</body>
+</html>

@@ -5,7 +5,6 @@ namespace TestsCalculator
 {
     public class LoginPageTests : BaseTests
     {
-
         [SetUp]
         public void SetUp() => OpenDriver();
 
@@ -20,7 +19,7 @@ namespace TestsCalculator
 
             // Assert
             string actualUrl = driver.Url;
-            string expectedUrl = "http://127.0.0.1:8080/Deposit";
+            string expectedUrl = $"{BaseUrl}/Deposit";
             Assert.AreEqual(expectedUrl, actualUrl);
         }
 
