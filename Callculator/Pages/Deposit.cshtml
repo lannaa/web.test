@@ -9,23 +9,23 @@
 </head>
 <body>
     <div align="center">
-        <div style="width:500px; height:250px; border:double">
+        <div style="width:500px; height:270px; border:double">
             <div style="text-align: right; cursor: pointer" onclick="window.location='Settings'">Settings</div>
 
             <table>
                 <tr>
                     <td>Deposit Ammount *</td>
-                    <td><input id="amount" oninput="VerifyNumber('amount', 0, 100000); Calculate()"></input></td>
+                    <td><input id="amount" oninput="VerifyNumber('amount', 0, 100001)"></td>
                     <td id="currency">$</td>
                 </tr>
                 <tr>
                     <td>Rate of intereset: *</td>
-                    <td><input id="percent" oninput="VerifyNumber('percent', 0, 100); Calculate()"></input></td>
+                    <td><input id="percent" oninput="VerifyNumber('percent', 0, 100)"></td>
                     <td>%</td>
                 </tr>
                 <tr>
                     <td>Investment Term: *</td>
-                    <td colspan="2"><input id="term" oninput="VerifyNumber('term', 0, 365); Calculate()" /></td>
+                    <td colspan="2"><input id="term" oninput="VerifyNumber('term', 0, 366)" /></td>
                 </tr>
                 <tr>
                     <td>Start date: *</td>
@@ -48,10 +48,14 @@
                         <select id="year" onchange="CalculateDate()"></select>
                     </td>
                 </tr>
-                <tr>
+                <tr id="finYear">
                     <td>Financial year: *</td>
-                    <td><input type="radio" id="d365" onchange="Calculate('d360')" checked="checked">365 days</input></td>
-                    <td><input type="radio" id="d360" onchange="Calculate('d365')">360 days</input></td>
+                    <td><input type="radio" id="d365" onchange="SetYear(360)" checked="checked">365 days</td>
+                    <td><input type="radio" id="d360" onchange="SetYear(365)">360 days</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><button id="calculateBtn" onclick="Calculate().then(Save)">Calculate</button></td>
                 </tr>
                 <tr>
                     <th align="left">Income: *</th>
@@ -87,6 +91,16 @@
 
         if (isNaN(value) || value < min || value > max) {
             document.getElementById(id).value = "0";
+        }
+
+        SetCalculateButtonState();
+    }
+
+    SetYear = function (year) {
+        if (year == 365) {
+            document.querySelector('#finYear td:nth-child(2) input').checked = false;
+        } else {
+            document.querySelector('#finYear td:nth-child(3) input').checked = false;
         }
     }
 
@@ -167,8 +181,15 @@
         }
     }
 
-    async function Calculate (id) {
-        if (id !== undefined) { document.getElementById(id).checked = false; }
+    function SetCalculateButtonState(disabled) {
+        var amount = Number(document.getElementById('amount').value);
+        var days = Number(document.getElementById('term').value);
+        var percent = Number(document.getElementById('percent').value);
+        document.getElementById('calculateBtn').disabled = disabled || (amount == 0 || days == 0 || percent == 0);
+    }
+
+    async function Calculate() {
+        SetCalculateButtonState(true);
 
         var amount = Number(document.getElementById('amount').value);
         var days = Number(document.getElementById('term').value);
@@ -181,7 +202,40 @@
 
         await SetNumber('interest', interest);
         await SetNumber('income', income);
+
         return Promise.resolve('done');
+    }
+
+    async function Save() {
+        await new Promise((resolve, reject) => setTimeout(resolve, 300));
+        SetCalculateButtonState(false);
+
+        return;
+
+        var amount = Number(document.getElementById('amount').value);
+        var days = Number(document.getElementById('term').value);
+        var percent = Number(document.getElementById('percent').value);
+        var year = document.querySelector('#finYear input').checked ? 365 : 360;
+        var interest = document.getElementById('interest').value;
+        var income = document.getElementById('income').value;
+        var endDate = document.getElementById('endDate').value;
+        $.ajax({
+            type: 'POST',
+            // url: '@Url.Action("Save", "History")',
+            data: {
+                'amount': amount,
+                'percent': percent,
+                'interest': interest,
+                'days': days,
+                'endDate': endDate,
+                'year': year,
+                'income': income
+            },
+            dataType: 'json',
+            success: function(response) {
+                SetCalculateButtonState(false);
+            }
+        });
     }
 
     VerifyLoggedIn = function() {
@@ -216,6 +270,6 @@
 
     SetCurrency();
     SetCurrentDate();
-    Calculate();
     VerifyLoggedIn();
+    Calculate();
 </script>
