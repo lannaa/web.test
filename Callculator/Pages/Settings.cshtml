@@ -49,7 +49,7 @@
             </table>
 
             <div align="center">
-                <button onclick="Save(); window.location = 'Deposit';" title="Save" id="save">Save</button>
+                <button onclick="Save()" title="Save" id="save">Save</button>
                 <button onclick="window.location = 'Deposit'" title="Save" id="cancel">Cancel</button>
             </div>
         </div>
@@ -70,9 +70,9 @@
                     'numberFormat': numberFormat.options[numberFormat.selectedIndex].textContent,
                     'currency': currency.options[currency.selectedIndex].textContent
                 },
-                dataType: 'json',
                 success: function (response) {
                     alert('Changes are saved!');
+                    window.location = 'Deposit';
                 }
             });
         }
