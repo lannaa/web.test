@@ -1,47 +1,15 @@
-using System;
-using System.Configuration;
-using System.Reflection;
 using NUnit.Framework;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
 using TestsCalculator.Pages;
 
 namespace TestsCalculator
 {
-    public class LoginPageTests
+    public class LoginPageTests : BaseTests
     {
-        private IWebDriver driver;
-        private string BaseUrl => ConfigurationManager.OpenExeConfiguration(Assembly.GetExecutingAssembly().Location).AppSettings.Settings["BaseUrl"].Value;
-
         [SetUp]
-        public void Setup()
-        {
-            var chromeDriverService = ChromeDriverService.CreateDefaultService();
-            chromeDriverService.HideCommandPromptWindow = true;
-            chromeDriverService.SuppressInitialDiagnosticInformation = true;
-
-            var options = new ChromeOptions
-            {
-                UnhandledPromptBehavior = UnhandledPromptBehavior.Ignore,
-                AcceptInsecureCertificates = true
-            };
-            options.AddArgument("--silent");
-            options.AddArgument("log-level=3");
-
-            driver = new ChromeDriver(chromeDriverService, options);
-            driver.Manage().Timeouts().PageLoad = TimeSpan.FromSeconds(30);
-            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-            driver.Url = BaseUrl;
-        }
-
-        [TearDown]
-        public void TearDown()
-        {
-           driver.Close();
-        }
+        public void SetUp() => OpenDriver();
 
         [Test]
-        public void PositiveTest()
+        public void LoginPositiveTest()
         {
             // Arrange
             LoginPage loginPage = new LoginPage(driver);
@@ -56,7 +24,7 @@ namespace TestsCalculator
         }
 
         [Test]
-        public void NegativeTestWrongName()
+        public void NegativeWrongNameTest()
         {
             // Arrange
             LoginPage loginPage = new LoginPage(driver);
@@ -72,7 +40,7 @@ namespace TestsCalculator
         }
 
         [Test]
-        public void NegativeTestWrongPass()
+        public void NegativeWrongPassTest()
         {
             // Arrange
             LoginPage loginPage = new LoginPage(driver);
@@ -88,7 +56,7 @@ namespace TestsCalculator
         }
 
         [Test]
-        public void NegativeTestWrongCredentials()
+        public void NegativeWrongCredentialsTest()
         {
             // Arrange
             LoginPage loginPage = new LoginPage(driver);
@@ -105,7 +73,7 @@ namespace TestsCalculator
         }
 
         [Test]
-        public void PositiveTestRemindPassPresent()
+        public void PositiveRemindPassPresentTest()
         {
             // Arrange
             LoginPage loginPage = new LoginPage(driver);
