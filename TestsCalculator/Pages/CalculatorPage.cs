@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
@@ -25,8 +24,8 @@ namespace TestsCalculator.Pages
         public string Interest => _driver.FindElement(By.Id("interest")).GetAttribute("value");
         public string EndDate => _driver.FindElement(By.Id("endDate")).GetAttribute("value");
         public string CurrencySymbol => _driver.FindElement(By.XPath("(//td [@id='currency'])")).Text;
-        public IWebElement SettingsBtn => _driver.FindElement(By.XPath("//div[text()='Settings']")); 
-
+        public IWebElement SettingsBtn => _driver.FindElement(By.XPath("//div[text()='Settings']"));
+        public IWebElement CalculateBtn => _driver.FindElement(By.Id("calculateBtn"));
         public string StartDate
         {
             get

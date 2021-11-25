@@ -5,7 +5,6 @@ using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using TestsCalculator.Pages;
-using System.Threading;
 
 namespace TestsCalculator
 {
@@ -114,10 +113,10 @@ namespace TestsCalculator
             Assert.AreEqual(DateTime.Today.ToString(dateFormat), calculatorPage.EndDate);
         }
 
-        [TestCase("123 456 789,00", "10 000,00")]
-        [TestCase("123 456 789.00", "10 000.00")]
-        [TestCase("123.456.789,00", "10.000,00")]
-        [TestCase("123,456,789.00", "10,000.00")]
+        [TestCase("123 456 789,00", "102 739,73")]
+        [TestCase("123 456 789.00", "102 739.73")]
+        [TestCase("123.456.789,00", "102.739,73")]
+        [TestCase("123,456,789.00", "102,739.73")]
         public void SaveNumberFormatTest(string number, string income)
         {
             //Arrange
@@ -129,8 +128,10 @@ namespace TestsCalculator
             settingsPage.SaveBtn.Click();
             IAlert alert = driver.SwitchTo().Alert();
             alert.Accept();
-            calculatorPage.AmountField.SendKeys("10000");
-            Thread.Sleep(10000);
+            calculatorPage.AmountField.SendKeys("100000");
+            calculatorPage.PercentField.SendKeys("10");
+            calculatorPage.TermField.SendKeys("100");
+            calculatorPage.CalculateBtn.Click();
 
             // Assert
             Assert.AreEqual(income, calculatorPage.Income);
