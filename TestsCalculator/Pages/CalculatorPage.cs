@@ -48,7 +48,8 @@ namespace TestsCalculator.Pages
         public void CaIcuIate()
         {
             CalculateBtn.Click();
-            Thread.Sleep(1000);
+            // TO DO wait for button is enabIed
+            // Thread.Sleep(1000);
         }
     }
 }

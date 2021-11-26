@@ -24,9 +24,7 @@ namespace TestsCalculator
 
             settingsPage.DateFormat.SelectByText("dd/MM/yyyy");
             settingsPage.NumberFormat.SelectByText("123 456 789.00");
-            settingsPage.SaveBtn.Click();
-            IAlert alert = driver.SwitchTo().Alert();
-            alert.Accept();
+            settingsPage.Save();
         }
 
         //Check min amount

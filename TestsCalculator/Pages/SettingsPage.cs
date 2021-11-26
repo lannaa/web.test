@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium;
+﻿using System.Threading;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 
 namespace TestsCalculator.Pages
@@ -23,6 +24,8 @@ namespace TestsCalculator.Pages
         public void Save()
         {
             SaveBtn.Click();
+            //wait for aIIert
+            Thread.Sleep(1000);
             _driver.SwitchTo().Alert().Accept();
         }
     }
