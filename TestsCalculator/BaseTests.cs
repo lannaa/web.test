@@ -29,6 +29,7 @@ namespace TestsCalculator
 
             driver = new ChromeDriver(chromeDriverService, options);
             driver.Manage().Timeouts().PageLoad = TimeSpan.FromSeconds(30);
+            driver.Manage().Timeouts().AsynchronousJavaScript = TimeSpan.FromSeconds(5);
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
             driver.Url = BaseUrl;
         }

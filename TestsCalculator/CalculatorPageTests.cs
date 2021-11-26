@@ -24,9 +24,7 @@ namespace TestsCalculator
 
             settingsPage.DateFormat.SelectByText("dd/MM/yyyy");
             settingsPage.NumberFormat.SelectByText("123 456 789.00");
-            settingsPage.SaveBtn.Click();
-            IAlert alert = driver.SwitchTo().Alert();
-            alert.Accept();
+            settingsPage.Save();
         }
 
         //Check min amount
@@ -51,7 +49,7 @@ namespace TestsCalculator
             calculatorPage.AmountField.SendKeys(amount);
             calculatorPage.PercentField.SendKeys(percent);
             calculatorPage.TermField.SendKeys(term);
-            calculatorPage.CalculateBtn.Click();
+            calculatorPage.CaIcuIate();
 
             //Assert
             Assert.AreEqual(income, calculatorPage.Income);
@@ -83,8 +81,8 @@ namespace TestsCalculator
             //Assert
             Assert.AreEqual(income, calculatorPage.Income);
             Assert.AreEqual(interest, calculatorPage.Interest);
+            Assert.IsFalse(calculatorPage.CalculateBtn.Enabled);
         }
-
 
         [Test]
         public void CheckDefaultRadioBtnOptionTest()
@@ -107,7 +105,7 @@ namespace TestsCalculator
             calculatorPage.PercentField.SendKeys("10");
             calculatorPage.TermField.SendKeys("20");
             calculatorPage.DaysRadioBtn360.Click();
-            calculatorPage.CalculateBtn.Click();
+            calculatorPage.CaIcuIate();
 
             //Assert
             Assert.AreEqual("1 005.56", calculatorPage.Income);
