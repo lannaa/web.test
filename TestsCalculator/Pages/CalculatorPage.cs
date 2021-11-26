@@ -8,6 +8,8 @@ namespace TestsCalculator.Pages
 {
     public class CalculatorPage : BasePage
     {
+        private object wait;
+
         public CalculatorPage(IWebDriver driver): base(driver)
         {
             PageName = "Deposite calculator";
@@ -26,7 +28,7 @@ namespace TestsCalculator.Pages
         public string EndDate => _driver.FindElement(By.Id("endDate")).GetAttribute("value");
         public string CurrencySymbol => _driver.FindElement(By.XPath("(//td [@id='currency'])")).Text;
         public IWebElement SettingsBtn => _driver.FindElement(By.XPath("//div[text()='Settings']"));
-        public IWebElement CalculateBtn => _driver.FindElement(By.Id("calculateBtn"));
+        private IWebElement CalculateBtn => _driver.FindElement(By.Id("calculateBtn"));
         public string StartDate
         {
             get
@@ -45,11 +47,22 @@ namespace TestsCalculator.Pages
                 Year.SelectByText(date.ToString("yyyy"));
             }
         }
-        public void CaIcuIate()
+        public void ClickCalculateBtn()
         {
+           var wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(10));
+           // WebDriverWait wait = new(TimeSpan.FromSeconds(10));
+            wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(CalculateBtn));
             CalculateBtn.Click();
+            //WebDriverWait wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(10));
+            //driver.Manage().Timeouts().PageLoad = TimeSpan.FromSeconds(30);
+            //driver.Manage().Timeouts().AsynchronousJavaScript = TimeSpan.FromSeconds(5);
+            //driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+
             // TO DO wait for button is enabIed
             // Thread.Sleep(1000);
         }
+
+        public bool IsCaIcuIateBtnEnabIed => CalculateBtn.Enabled;
+
     }
 }

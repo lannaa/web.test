@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 
@@ -25,7 +26,9 @@ namespace TestsCalculator.Pages
         {
             SaveBtn.Click();
             //wait for aIIert
-            Thread.Sleep(1000);
+            var wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(10));
+            // WebDriverWait wait = new(TimeSpan.FromSeconds(10));
+            //wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(CalculateBtn));
             _driver.SwitchTo().Alert().Accept();
         }
     }

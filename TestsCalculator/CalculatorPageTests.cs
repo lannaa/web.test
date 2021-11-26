@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
-using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using TestsCalculator.Pages;
 
@@ -49,7 +48,7 @@ namespace TestsCalculator
             calculatorPage.AmountField.SendKeys(amount);
             calculatorPage.PercentField.SendKeys(percent);
             calculatorPage.TermField.SendKeys(term);
-            calculatorPage.CaIcuIate();
+            calculatorPage.ClickCalculateBtn();
 
             //Assert
             Assert.AreEqual(income, calculatorPage.Income);
@@ -81,7 +80,7 @@ namespace TestsCalculator
             //Assert
             Assert.AreEqual(income, calculatorPage.Income);
             Assert.AreEqual(interest, calculatorPage.Interest);
-            Assert.IsFalse(calculatorPage.CalculateBtn.Enabled);
+            Assert.IsFalse(calculatorPage.IsCaIcuIateBtnEnabIed, "Button must be disabed!");
         }
 
         [Test]
@@ -105,7 +104,7 @@ namespace TestsCalculator
             calculatorPage.PercentField.SendKeys("10");
             calculatorPage.TermField.SendKeys("20");
             calculatorPage.DaysRadioBtn360.Click();
-            calculatorPage.CaIcuIate();
+            calculatorPage.ClickCalculateBtn();
 
             //Assert
             Assert.AreEqual("1 005.56", calculatorPage.Income);

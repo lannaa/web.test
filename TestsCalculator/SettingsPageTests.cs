@@ -131,7 +131,7 @@ namespace TestsCalculator
             calculatorPage.AmountField.SendKeys("100000");
             calculatorPage.PercentField.SendKeys("10");
             calculatorPage.TermField.SendKeys("100");
-            calculatorPage.CalculateBtn.Click();
+            calculatorPage.ClickCalculateBtn();
 
             // Assert
             Assert.AreEqual(income, calculatorPage.Income);
