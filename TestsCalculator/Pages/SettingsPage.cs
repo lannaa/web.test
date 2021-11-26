@@ -26,4 +26,4 @@ namespace TestsCalculator.Pages
             _driver.SwitchTo().Alert().Accept();
         }
     }
-}       
+}

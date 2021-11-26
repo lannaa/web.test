@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Threading;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 
@@ -43,6 +44,11 @@ namespace TestsCalculator.Pages
                 Month.SelectByText(date.ToString("MMMM"));
                 Year.SelectByText(date.ToString("yyyy"));
             }
+        }
+        public void CaIcuIate()
+        {
+            CalculateBtn.Click();
+            Thread.Sleep(1000);
         }
     }
 }

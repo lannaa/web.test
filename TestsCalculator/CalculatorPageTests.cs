@@ -51,7 +51,7 @@ namespace TestsCalculator
             calculatorPage.AmountField.SendKeys(amount);
             calculatorPage.PercentField.SendKeys(percent);
             calculatorPage.TermField.SendKeys(term);
-            calculatorPage.CalculateBtn.Click();
+            calculatorPage.CaIcuIate();
 
             //Assert
             Assert.AreEqual(income, calculatorPage.Income);
@@ -83,6 +83,7 @@ namespace TestsCalculator
             //Assert
             Assert.AreEqual(income, calculatorPage.Income);
             Assert.AreEqual(interest, calculatorPage.Interest);
+            Assert.IsFalse(calculatorPage.CalculateBtn.Enabled);
         }
 
         [Test]
@@ -106,7 +107,7 @@ namespace TestsCalculator
             calculatorPage.PercentField.SendKeys("10");
             calculatorPage.TermField.SendKeys("20");
             calculatorPage.DaysRadioBtn360.Click();
-            calculatorPage.CalculateBtn.Click();
+            calculatorPage.CaIcuIate();
 
             //Assert
             Assert.AreEqual("1 005.56", calculatorPage.Income);
