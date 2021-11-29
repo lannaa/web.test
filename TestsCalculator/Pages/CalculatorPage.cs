@@ -44,11 +44,11 @@ namespace TestsCalculator.Pages
                 Year.SelectByText(date.ToString("yyyy"));
             }
         }
-        public void ClickCalculateBtn()
+        public void Calculate()
         {
+            CalculateBtn.Click();
             var wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(10));
             wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(CalculateBtn));
-            CalculateBtn.Click();
         }
 
         public bool IsCaIcuIateBtnEnabIed => CalculateBtn.Enabled;
