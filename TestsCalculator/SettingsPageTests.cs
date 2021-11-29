@@ -104,7 +104,7 @@ namespace TestsCalculator
 
             //Act
             settingsPage.DateFormat.SelectByText(dateFormat);
-            settingsPage.ClickSaveBtn();
+            settingsPage.Save();
             //Assert
             Assert.AreEqual(DateTime.Today.ToString(dateFormat), calculatorPage.EndDate);
         }
@@ -121,11 +121,11 @@ namespace TestsCalculator
 
             //Act
             settingsPage.NumberFormat.SelectByText(number);
-            settingsPage.ClickSaveBtn();
+            settingsPage.Save();
             calculatorPage.AmountField.SendKeys("100000");
             calculatorPage.PercentField.SendKeys("10");
             calculatorPage.TermField.SendKeys("100");
-            calculatorPage.ClickCalculateBtn();
+            calculatorPage.Calculate();
 
             // Assert
             Assert.AreEqual(income, calculatorPage.Income);
@@ -142,7 +142,7 @@ namespace TestsCalculator
 
             //Act
             settingsPage.Currency.SelectByText(currency);
-            settingsPage.ClickSaveBtn();
+            settingsPage.Save();
 
             //Assert
             Assert.AreEqual(currencySymbol, calculatorPage.CurrencySymbol);
