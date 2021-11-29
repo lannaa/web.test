@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 
@@ -22,12 +21,11 @@ namespace TestsCalculator.Pages
         public IWebElement CancelBtn => _driver.FindElement(By.Id("cancel"));
         public IWebElement LogoutBtn => _driver.FindElement(By.XPath("//div[text()='Logout']"));
 
-        public void Save()
+        public void ClickSaveBtn()
         {
             SaveBtn.Click();
-            var wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(15));
+            var wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(10));
             wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.AlertIsPresent());
-            //wait for aIIert
             _driver.SwitchTo().Alert().Accept();
         }
     }

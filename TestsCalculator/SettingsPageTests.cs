@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
-using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using TestsCalculator.Pages;
 
@@ -105,8 +104,7 @@ namespace TestsCalculator
 
             //Act
             settingsPage.DateFormat.SelectByText(dateFormat);
-            //settingsPage.SaveBtn.Click();
-            settingsPage.Save();
+            settingsPage.ClickSaveBtn();
             //Assert
             Assert.AreEqual(DateTime.Today.ToString(dateFormat), calculatorPage.EndDate);
         }
@@ -123,8 +121,7 @@ namespace TestsCalculator
 
             //Act
             settingsPage.NumberFormat.SelectByText(number);
-            // settingsPage.SaveBtn.Click();
-            settingsPage.Save();
+            settingsPage.ClickSaveBtn();
             calculatorPage.AmountField.SendKeys("100000");
             calculatorPage.PercentField.SendKeys("10");
             calculatorPage.TermField.SendKeys("100");
@@ -145,7 +142,7 @@ namespace TestsCalculator
 
             //Act
             settingsPage.Currency.SelectByText(currency);
-            settingsPage.Save();
+            settingsPage.ClickSaveBtn();
 
             //Assert
             Assert.AreEqual(currencySymbol, calculatorPage.CurrencySymbol);
