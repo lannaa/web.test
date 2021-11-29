@@ -105,10 +105,8 @@ namespace TestsCalculator
 
             //Act
             settingsPage.DateFormat.SelectByText(dateFormat);
-            settingsPage.SaveBtn.Click();
-            IAlert alert = driver.SwitchTo().Alert();
-            alert.Accept();
-
+            //settingsPage.SaveBtn.Click();
+            settingsPage.Save();
             //Assert
             Assert.AreEqual(DateTime.Today.ToString(dateFormat), calculatorPage.EndDate);
         }
@@ -125,9 +123,8 @@ namespace TestsCalculator
 
             //Act
             settingsPage.NumberFormat.SelectByText(number);
-            settingsPage.SaveBtn.Click();
-            IAlert alert = driver.SwitchTo().Alert();
-            alert.Accept();
+            // settingsPage.SaveBtn.Click();
+            settingsPage.Save();
             calculatorPage.AmountField.SendKeys("100000");
             calculatorPage.PercentField.SendKeys("10");
             calculatorPage.TermField.SendKeys("100");
