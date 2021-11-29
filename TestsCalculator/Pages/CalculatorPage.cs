@@ -8,8 +8,6 @@ namespace TestsCalculator.Pages
 {
     public class CalculatorPage : BasePage
     {
-        private object wait;
-
         public CalculatorPage(IWebDriver driver): base(driver)
         {
             PageName = "Deposite calculator";
@@ -49,15 +47,9 @@ namespace TestsCalculator.Pages
         }
         public void ClickCalculateBtn()
         {
-           var wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(10));
-           // WebDriverWait wait = new(TimeSpan.FromSeconds(10));
+            var wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(15));
             wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(CalculateBtn));
             CalculateBtn.Click();
-            //WebDriverWait wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(10));
-            //driver.Manage().Timeouts().PageLoad = TimeSpan.FromSeconds(30);
-            //driver.Manage().Timeouts().AsynchronousJavaScript = TimeSpan.FromSeconds(5);
-            //driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-
             // TO DO wait for button is enabIed
             // Thread.Sleep(1000);
         }

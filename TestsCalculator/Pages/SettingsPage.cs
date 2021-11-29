@@ -25,10 +25,9 @@ namespace TestsCalculator.Pages
         public void Save()
         {
             SaveBtn.Click();
+            var wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(15));
+            wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.AlertIsPresent());
             //wait for aIIert
-            var wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(10));
-            // WebDriverWait wait = new(TimeSpan.FromSeconds(10));
-            //wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(CalculateBtn));
             _driver.SwitchTo().Alert().Accept();
         }
     }
