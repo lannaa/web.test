@@ -1,33 +1,15 @@
 using NUnit.Framework;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.Support.UI;
-using System;
 using TestsCalculator.Pages;
 
 namespace TestsCalculator
 {
-    public class LoginPageTests
+    public class LoginPageTests : BaseTests
     {
-        private IWebDriver driver;
-
         [SetUp]
-        public void Setup()
-        {
-            driver = new ChromeDriver();
-            driver.Manage().Timeouts().PageLoad = TimeSpan.FromSeconds(30);
-            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-            driver.Url = "http://127.0.0.1:8080/";
-        }
-
-        [TearDown]
-        public void TearDown()
-        {
-           driver.Close();
-        }
+        public void SetUp() => OpenDriver();
 
         [Test]
-        public void PositiveTest()
+        public void LoginPositiveTest()
         {
             // Arrange
             LoginPage loginPage = new LoginPage(driver);
@@ -37,12 +19,12 @@ namespace TestsCalculator
 
             // Assert
             string actualUrl = driver.Url;
-            string expectedUrl = "http://127.0.0.1:8080/Deposit";
+            string expectedUrl = $"{BaseUrl}/Deposit";
             Assert.AreEqual(expectedUrl, actualUrl);
         }
 
         [Test]
-        public void NegativeTestWrongName()
+        public void NegativeWrongNameTest()
         {
             // Arrange
             LoginPage loginPage = new LoginPage(driver);
@@ -58,7 +40,7 @@ namespace TestsCalculator
         }
 
         [Test]
-        public void NegativeTestWrongPass()
+        public void NegativeWrongPassTest()
         {
             // Arrange
             LoginPage loginPage = new LoginPage(driver);
@@ -74,7 +56,7 @@ namespace TestsCalculator
         }
 
         [Test]
-        public void NegativeTestWrongCredentials()
+        public void NegativeWrongCredentialsTest()
         {
             // Arrange
             LoginPage loginPage = new LoginPage(driver);
@@ -91,7 +73,7 @@ namespace TestsCalculator
         }
 
         [Test]
-        public void PositiveTestRemindPassPresent()
+        public void PositiveRemindPassPresentTest()
         {
             // Arrange
             LoginPage loginPage = new LoginPage(driver);

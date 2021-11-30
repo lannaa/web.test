@@ -5,13 +5,11 @@ using OpenQA.Selenium.Support.UI;
 
 namespace TestsCalculator.Pages
 {
-    public class CalculatorPage
+    public class CalculatorPage : BasePage
     {
-        private IWebDriver _driver;
-
-        public CalculatorPage(IWebDriver driver)
+        public CalculatorPage(IWebDriver driver): base(driver)
         {
-            _driver = driver;
+            PageName = "Deposite calculator";
         }
 
         public IWebElement AmountField => _driver.FindElement(By.Id("amount"));
@@ -25,7 +23,9 @@ namespace TestsCalculator.Pages
         public string Income => _driver.FindElement(By.Id("income")).GetAttribute("value");
         public string Interest => _driver.FindElement(By.Id("interest")).GetAttribute("value");
         public string EndDate => _driver.FindElement(By.Id("endDate")).GetAttribute("value");
-
+        public string CurrencySymbol => _driver.FindElement(By.XPath("(//td [@id='currency'])")).Text;
+        public IWebElement SettingsBtn => _driver.FindElement(By.XPath("//div[text()='Settings']"));
+        private IWebElement CalculateBtn => _driver.FindElement(By.Id("calculateBtn"));
         public string StartDate
         {
             get
@@ -44,5 +44,14 @@ namespace TestsCalculator.Pages
                 Year.SelectByText(date.ToString("yyyy"));
             }
         }
+        public void Calculate()
+        {
+            CalculateBtn.Click();
+            var wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(10));
+            wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(CalculateBtn));
+        }
+
+        public bool IsCaIcuIateBtnEnabIed => CalculateBtn.Enabled;
+
     }
 }

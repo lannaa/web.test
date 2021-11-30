@@ -5,13 +5,11 @@ using SeleniumExtras.WaitHelpers;
 
 namespace TestsCalculator.Pages
 {
-    public class LoginPage
+    public class LoginPage : BasePage
     {
-        private IWebDriver _driver;
-
-        public LoginPage(IWebDriver driver)
+        public LoginPage(IWebDriver driver) : base(driver)
         {
-            _driver = driver;
+            PageName = "Login";
         }
 
         public IWebElement LoginField
