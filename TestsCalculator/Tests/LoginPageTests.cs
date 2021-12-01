@@ -13,14 +13,12 @@ namespace TestsCalculator
         {
             // Arrange
             LoginPage loginPage = new LoginPage(driver);
-
+            CalculatorPage calculatorPage = new CalculatorPage(driver);
             // Act
             loginPage.Login("test", "newyork1");
 
             // Assert
-            string actualUrl = driver.Url;
-            string expectedUrl = $"{BaseUrl}/Deposit";
-            Assert.AreEqual(expectedUrl, actualUrl);
+            Assert.IsTrue(calculatorPage.IsOpened);
         }
 
         [Test]
