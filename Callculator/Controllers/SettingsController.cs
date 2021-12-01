@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Globalization;
-using System.IO;
 using System.Linq;
+using Callculator.DB;
+using Callculator.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Callculator.Controllers
@@ -9,95 +9,58 @@ namespace Callculator.Controllers
     [Route("api/[controller]")]
     public class SettingsController : Controller
     {
-        private readonly string settings = $"{Path.GetTempPath()}/settings.data";
-
-        public IActionResult Index()
-        {
-            return View();
-        }
-
         [HttpGet("date")]
-        public IActionResult Date(string date)
+        public IActionResult Date(string date, string login)
         {
-            var dateTime = DateTime.ParseExact(date, "dd/MM/yyyy", CultureInfo.InvariantCulture);
-            var format = System.IO.File.Exists(settings)
-                ? System.IO.File.ReadAllText(settings).Split(';')[0]
-                : "dd/MM/yyyy";
-
-            return Json(dateTime.ToString(format, CultureInfo.InvariantCulture));
+            return Json(date.FormatDate(login));
         }
 
         [HttpGet("number")]
-        public IActionResult Number(decimal number)
+        public IActionResult Number(decimal number, string login)
         {
-            var result = Math.Round(number, 2, MidpointRounding.AwayFromZero)
-                .ToString("N", CultureInfo.InvariantCulture);
-            var format = System.IO.File.Exists(settings)
-                ? System.IO.File.ReadAllText(settings).Split(';')[1]
-                : "123,456,789.00";
-
-            switch (format)
-            {
-                case "123.456.789,00":
-                    result = result.Replace(',', ' ').Replace('.', ',').Replace(' ', '.');
-                    break;
-
-                case "123 456 789.00":
-                    result = result.Replace(',', ' ');
-                    break;
-
-                case "123 456 789,00":
-                    result = result.Replace(',', ' ').Replace('.', ',');
-                    break;
-            }
-
-            return Json(result);
+            return Json(number.FormatNumber(login));
         }
 
         [HttpGet("currency")]
-        public IActionResult Currency()
+        public IActionResult Currency(string login)
         {
-            var result = System.IO.File.Exists(settings)
-                ? System.IO.File.ReadAllText(settings).Split(';')[2]
-                : "$ - US dollar";
+            var currency = Constants.Get("currency").ElementAt(Settings.Get(login).Currency);
 
-            return Json(result.Split(' ').First());
-        }
-
-        [HttpGet]
-        public IActionResult Get()
-        {
-            var result = new Settings
-            {
-                DateFormat = "dd/MMM/yyyy",
-                NumberFormat = "123,456,789.00",
-                Currency = "$ - US dollar"
-            };
-
-            if (System.IO.File.Exists(settings))
-            {
-                var values = System.IO.File.ReadAllText(settings).Split(';');
-
-                result.DateFormat = values[0];
-                result.NumberFormat = values[1];
-                result.Currency = values[2];
-            }
-
-            return Json(result);
+            return Json(currency.Split(' ').First());
         }
 
         [HttpPost]
-        public IActionResult Save(string dateFormat, string numberFormat, string currency)
+        public IActionResult Get([FromBody] SettingsDto dto)
         {
-            System.IO.File.WriteAllText(settings, $"{dateFormat};{numberFormat};{currency}");
-            return Json("Ok");
+            return Json(Settings.Get(dto.Login));
         }
 
-        class Settings
+        [HttpPost("save")]
+        public IActionResult Save([FromBody] SettingsDto dto)
         {
-            public string DateFormat { get; set; }
-            public string NumberFormat { get; set; }
-            public string Currency { get; set; }
+            Settings.Save(dto);
+            return Ok();
+        }
+
+        [HttpGet("values")]
+        public IActionResult GetValues(string name)
+        {
+            return Json(Constants.Get(name));
+        }
+
+        [HttpGet("days")]
+        public IActionResult GetDays()
+        {
+            var today = DateTime.Today;
+            var result = Enumerable.Range(1, DateTime.DaysInMonth(today.Year, today.Month)).ToList();
+            return Json(result);
+        }
+
+        [HttpGet("years")]
+        public IActionResult GetYears()
+        {
+            var result = Enumerable.Range(2010, 16).ToList();
+            return Json(result);
         }
     }
 }

@@ -11,6 +11,7 @@
     <div align="center">
         <div style="width:500px; height:270px; border:double">
             <div style="text-align: right; cursor: pointer" onclick="window.location='Settings'">Settings</div>
+            <div style="text-align: right; cursor: pointer" onclick="window.location='History'">History</div>
 
             <table>
                 <tr>
@@ -208,9 +209,6 @@
 
     async function Save() {
         await new Promise((resolve, reject) => setTimeout(resolve, 300));
-        SetCalculateButtonState(false);
-
-        return;
 
         var amount = Number(document.getElementById('amount').value);
         var days = Number(document.getElementById('term').value);
@@ -221,7 +219,7 @@
         var endDate = document.getElementById('endDate').value;
         $.ajax({
             type: 'POST',
-            // url: '@Url.Action("Save", "History")',
+            url: 'api/History',
             data: {
                 'amount': amount,
                 'percent': percent,

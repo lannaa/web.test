@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
@@ -45,6 +46,7 @@ namespace TestsCalculator.Pages
             LoginField.SendKeys(name);
             PasswordField.SendKeys(password);
             LoginButton.Click();
+            Thread.Sleep(500);
         }
     }
 }
