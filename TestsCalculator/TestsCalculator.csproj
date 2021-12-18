@@ -30,9 +30,11 @@
     <None Remove="DotNetSeleniumExtras.WaitHelpers" />
     <None Remove="Selenium.Support" />
     <None Remove="Pages\" />
+    <None Remove="Tests\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Pages\" />
+    <Folder Include="Tests\" />
   </ItemGroup>
   <ItemGroup>
     <None Update="App.config">
